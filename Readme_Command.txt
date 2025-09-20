@@ -1,4 +1,5 @@
 All commands used in this projects:
+1. Setup
 - install NodeJs
 - install bun for window: powershell -c "irm bun.sh/install.ps1|iex"
 - check nodejs version: node --version
@@ -24,4 +25,4 @@ bun.block: block for bun package mamager
 + check file: utils.ts → cn funtion
 - run project: bun run dev
 - add componets to project: bunx --bun shadcn@2.4.0-canary add --all
-- 
+2. custom:
