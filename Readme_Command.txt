@@ -26,3 +26,27 @@ bun.block: block for bun package mamager
 - run project: bun run dev
 - add componets to project: bunx --bun shadcn@2.4.0-canary add --all
 2. custom:
+- Css
+- HTml
+- Github
+3. Homepage
+- export defaut Page: using to inport as a page;
+4, Payload integration
+- Choose a database
++ Mongo database
++ PostgreSQL
++ SQL lite
+- Why choose MongoDb
++ Flexible, schemaless structure
++ Greate for nested + relational data
++ Works out of the box with Payload
++ Easy and Free clound histing via Atlas
+- Integrate Payload
++ run the configuration CLI
++ add a collection schema
+- Install payload: bunx create-payload-app@latest --use-bun
+- Move all folder in app to app/(app)
+- Connect to MongoDB:
++ rerun: bunx create-payload-app@latest --use-bun
++ Choose MongoDb
++ Config MongoDB connection string: MongoDb Atlas → Cluster → connect → MongoDB for Vscode → copy connectionstring → Parse to terminal
