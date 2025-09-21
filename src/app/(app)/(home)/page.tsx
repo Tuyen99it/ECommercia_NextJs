@@ -5,11 +5,17 @@ export default  async function Home(){
     config:configPromise,
    })
    const data=await payload.find({
-    collection:"Categories",
+    collection:"categories",
+    dept:1, //populate subcategories
+    where:{
+        parent:{
+            exists:false,
+        }
+    }
    })
     return (
         <div >
-           {JSON.stringify(data,null,2)}
+        <p>Home Page</p>
         </div>
     )
 }

@@ -50,3 +50,12 @@ bun.block: block for bun package mamager
 + rerun: bunx create-payload-app@latest --use-bun
 + Choose MongoDb
 + Config MongoDB connection string: MongoDb Atlas → Cluster → connect → MongoDB for Vscode → copy connectionstring → Parse to terminal
+5. Search filter
+- Enhance "Categories" collection
+- Add subcategor, color, slug..
+- Create "Search Filter" component
++ Display each Categories
++ Display subcategories 
+- Push to github
+- fresh migration database ( drop database ): bun run payload migrate:fresh
+

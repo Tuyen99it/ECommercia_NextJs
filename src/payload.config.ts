@@ -9,11 +9,11 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
-
+import Categories from "./collections/Categories"
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-import Categories from "./collections/Categories"
+
 export default buildConfig({
   admin: {
     user: Users.slug,

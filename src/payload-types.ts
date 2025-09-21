@@ -285,6 +285,13 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
 }
+export interface Category {
+    id: string;
+    name: string;
+    slug: string;
+    color: string;
+    subcategories?: Category[];
+}
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "auth".
