@@ -22,7 +22,7 @@ export const SubCategoryMenu = ({
     }
     const backgroundColor =  category.color||"#F5F5F5";
     return (
-            <div className="fixed z-100"
+            <div className="fixed z-100 "
                 style={{
                     top: position.top,
                     left: position.left,
@@ -31,7 +31,7 @@ export const SubCategoryMenu = ({
                 <div className="h-10 w-60"></div>
                 <div
                     style={{ backgroundColor }}
-                    className="w-60 text-black rounded-md overflow-hidden border shadow-[4px_4px_0px_0px_rgba(0,0,0,0,1)] -translate-x-[2px] -translate-y-[2px] ">
+                    className="w-60 text-black rounded-md overflow-hidden border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -translate-x-[2px] -translate-y-[2px]  ">
 
                     {
                         category.subcategories?.map((subcategory: Category) => (

@@ -40,11 +40,11 @@ export default async function RootLayout({
             }
         }
     })
-    const formattedData=data.docs.map((doc: any)=>({
-        ...doc,
-        subcategories:(doc.subcategories?.docs??[]).map((doc: any)=>({
+    const formattedData=data.docs.map((doc: any)=>({ // like .select in linq
+        ...doc,// copy all properties to new object
+        subcategories:(doc.subcategories?.docs??[]).map((doc: any)=>({// if subcategories? is not equal null get .doc ?? if doc==null create a new empty array []
             // because of "depth:1" we are fonfident  doc wil be a type of "category"
-            ...(doc as Category),
+            ...(doc as Category), // copy all properties as Category
         }))
      }))
     console.log(data);
@@ -56,7 +56,8 @@ export default async function RootLayout({
                 <Navbar />
                 <SearchFilters data={formattedData} />
                 <div className="flex-1">
-                    {children}
+                    {/* Chilren is the page in the body */}
+                    {children} 
                 </div>
                 <Footer />
             </body>

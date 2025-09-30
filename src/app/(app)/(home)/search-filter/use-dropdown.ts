@@ -8,7 +8,7 @@ export const useDropdownPosition=( ref:RefObject<HTMLDivElement|null>|RefObject<
         
         // caculate initialize  position
         let left=rect.left+window.scrollX;
-        const top=rect.top +window.scrollY+20;
+        const top=rect.top +window.scrollY+15;
 
         // CHECK IF DROPDOWN WOULD GO OFF THE FIGHT EDGE OF TTHE VIEWPORT
          if (left +dropdownWidth>window.innerWidth){
