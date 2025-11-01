@@ -5,14 +5,18 @@ import { CustomCategory } from "../types";
 import { CategoriesSidebar } from "./categories-sidebar";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useTRPC } from "@/trpc/client";
+import { useSuspenseQuery } from "@tanstack/react-query";
 interface Props{
     disable?:boolean,
-    data:CustomCategory
+   
 }
  export const SearchInput =({
-    disable,data
+    disable
 }:Props)=>{
     const [isSidebarOpen, setIsSidebarOpen]=useState(false);
+    const trpc=useTRPC()
+    const {data}=useSuspenseQuery(trpc.categories.getMany.queryOptions())
     return (
         <div className=" flex items-center w-full">
             {/* <CategoriesSidebar data={data} open={isSidebarOpen} onOpenChange={setIsSidebarOpen}/> */}

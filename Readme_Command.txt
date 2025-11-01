@@ -88,3 +88,40 @@ Bun v1.3.1 (Windows x64)
 + add new package.json commands
 - Resolve TS issues: CustomCategory
 + Create a " CustomCategory" type
+7. Trpc intergration
+- setup TRPC
++ Basic router
++ Client-side fetcher
++ server-side fetcher- Texplore new syntax
+- Add " categoriesRouter"
++ Prefetch categories in " Layout.tsx"
++ Client-site fetch c categories in "  categories-sidebar.text"
++ Infer Trpc types
+- Push to Github
+7.1 Trpc setup
+- install Trpc: https://trpc.io/docs/client/tanstack-react-query/server-components
+- install with bun: bun add @trpc/server @trpc/client @trpc/tanstack-react-query @tanstack/react-query@latest zod client-only server-only
+- Create a tRPC router: app/trpc/init.ts, app/trpc/_app.ts, app/trpc/router.ts
+- create a query Client Factory: app/trpc/query-clietn.ts
+- install superjson: bun add superjson
+- Create a tRPC client for Client Components: app/trpc/client.ts
+- Create NEXT_PUBLIC_APP_URL at client.ts
+- Mount the provider in the root of your application (e.g. app/layout.tsx when using Next.js).
+  <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <TRPCReactProvider>
+          {children}
+        </TRPCReactProvider>
+
+  </body>
+- Create a tRPC caller for Server Components: trpc/server.tsx
+- Using your API
+7.2 Add categories Router
+- Modules/Categories/Server/Procedures.ts
+- Common issue:It doesn't work! I'm getting any everywhere, check: https://trpc.io/docs/faq
+fix: .vscode/settings.json
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
+}

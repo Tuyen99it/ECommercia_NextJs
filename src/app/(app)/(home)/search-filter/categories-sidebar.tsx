@@ -6,6 +6,7 @@ import { CustomCategory } from '../types';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { SubCategoryMenu } from './subcategory-menu';
+import { CategoriesGetManyOutput } from "@/modules/categories/types";
 
 interface Props {
     open: boolean;
@@ -18,8 +19,8 @@ export const CategoriesSidebar = ({
     data
 }) => {
     const router=useRouter();
-    const [parentCategories, setParentCategories] = useState<CustomCategory[] | null>(null)
-    const [selectedCategory, setSelectedCategory] = useState<CustomCategory | null>(null)
+    const [parentCategories, setParentCategories] = useState<CategoriesGetManyOutput | null>(null)
+    const [selectedCategory, setSelectedCategory] = useState<CategoriesGetManyOutput[1]| null>(null)
     // if we have parent categories, show those, otherwise show root categories
     const currentCategories = parentCategories ?? data ?? [];
     const handleOpenChange=(open:boolean)=>{

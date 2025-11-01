@@ -6,8 +6,13 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import Navbar from "./navbar";
 import Footer from "./footer";
-import SearchFilters from "./search-filter";
+import {SearchFilters, SearchFiltersSkeleton} from "./search-filter";
 import { CustomCategory } from './types';
+import { getQueryClient, trpc } from '@/trpc/server';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { Suspense } from 'react';
+
+
 const geistSans = Geist({
     variable: "--font-geist-sans",
     subsets: ["latin"],
@@ -28,35 +33,28 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const payload = await getPayload({
-        config: configPromise,
-    })
-    const data = await payload.find({
-        collection: "categories",
-        depth: 1, //populate subcategories
-        pagination: false,
-        where: {
-            parent: {
-                exists: false,
-            }
-        },
-        sort: "name"
-    })
-    const formattedData: CustomCategory[] = data.docs.map((doc) => ({
-        ...doc,
-        subcategories:
-            (doc.subcategories?.docs?.map((subDoc) => ({
-                ...subDoc,
-            })) as Category[]) || [],
-    }));
-    console.log(data);
+
+    // prefresh data from trpc server
+    const queryClient = getQueryClient();
+    void queryClient.prefetchQuery(
+        trpc.categories.getMany.queryOptions(),
+    )
     return (
         <html lang="en">
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
                 <Navbar />
-                <SearchFilters data={formattedData} />
+                {/* get data user Hydration Bondary and Leveraging Suspense */}
+                <HydrationBoundary state={dehydrate(queryClient)}>
+                    <Suspense fallback={
+                        <SearchFiltersSkeleton/>
+                        }>
+                        <SearchFilters />
+                    </Suspense>
+
+                </HydrationBoundary>
+
                 <div className="flex-1">
                     {/* Chilren is the page in the body */}
                     {children}
