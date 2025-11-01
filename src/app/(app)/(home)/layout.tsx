@@ -7,7 +7,6 @@ import "../globals.css";
 import Navbar from "./navbar";
 import Footer from "./footer";
 import {SearchFilters, SearchFiltersSkeleton} from "./search-filter";
-import { CustomCategory } from './types';
 import { getQueryClient, trpc } from '@/trpc/server';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Suspense } from 'react';

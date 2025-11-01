@@ -125,3 +125,18 @@ fix: .vscode/settings.json
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true
 }
+- Use Infering Type: https://trpc.io/docs/client/react/infer-types: modules/categories/server/types.ts
+- Use Infering type in CustomCategory: change CustomCategory to CategoriesGetManyOutput
+8. Authentication
+8.1 Contents
+- Modify " Users" collections
++ Add "userName" field
+- Create auth procedures
++ use payload auth utils
+- Create auth screens
++ Login view
++ register view
+- Use Authenticated states
++ Display "dashboard" when logged in
++ Display " Library" button when logged in
+
