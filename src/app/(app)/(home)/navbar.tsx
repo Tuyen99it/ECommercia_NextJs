@@ -22,7 +22,7 @@ const NavbarItem = ({
 }: NavbarItemProps) => {
     return (
         <Button variant="outline" 
-        className={ cn("bg-transparent hover:bg-transparent rounded-full hover:border-primary border-transparent  px-3.5 text-lg ",
+        className={ cn("bg-transparent hover:bg-transparent rounded-full hover:border-primary border-transparent  px-3.5 text-lg ", // cn: class name
         isActive &&"bg-black text-white")}>
            <Link href={href}>
             {children}
@@ -40,7 +40,7 @@ const navbarItems = [
 
 const Navbar = () => {
 
-    const pathname=usePathname(); // usePathname to active navItem when staying at Active page
+    const pathname=usePathname(); // usePathname is the hook to get current path name, it is to active navItem when staying at Active page
     const [isSidebarOpen, setIsSidebarOpen] =useState(false);
     return (
         <div>

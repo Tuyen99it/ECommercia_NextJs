@@ -1,10 +1,12 @@
 "use client"
 import { Button } from "@/components/ui/button";
+import { Link } from "lucide-react";
 import { cn } from "@/lib/utils"
 import { useState, useRef } from "react";
 import { useDropdownPosition } from "./use-dropdown";
 import { SubCategoryMenu } from "./subcategory-menu";
 import { Category } from "@/payload-types";
+import { Linden_Hill } from "next/font/google";
 interface Props {
     category: Category;
     isActive?: boolean;
@@ -36,6 +38,8 @@ export const CategoryDropdown = ({
                     className={cn("h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-white w-fit",
                         isActive && !isNavigationHovered && "bg-white border-primary"
                     )}>
+                        <Link
+                        href={`/${category.slug==="all"?"":category.slug}`}/>
                     {category.name}
                 </Button>
                 {category.subcategories && category.subcategories.length > 0 && (

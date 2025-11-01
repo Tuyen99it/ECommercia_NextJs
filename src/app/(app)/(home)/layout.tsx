@@ -1,12 +1,13 @@
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import {Category} from "@/payload-types"
+import { Category } from "@/payload-types"
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import Navbar from "./navbar";
 import Footer from "./footer";
 import SearchFilters from "./search-filter";
+import { CustomCategory } from './types';
 const geistSans = Geist({
     variable: "--font-geist-sans",
     subsets: ["latin"],
@@ -33,20 +34,21 @@ export default async function RootLayout({
     const data = await payload.find({
         collection: "categories",
         depth: 1, //populate subcategories
-        pagination:false,
+        pagination: false,
         where: {
             parent: {
                 exists: false,
             }
-        }
+        },
+        sort: "name"
     })
-    const formattedData=data.docs.map((doc: any)=>({ // like .select in linq
-        ...doc,// copy all properties to new object
-        subcategories:(doc.subcategories?.docs??[]).map((doc: any)=>({// if subcategories? is not equal null get .doc ?? if doc==null create a new empty array []
-            // because of "depth:1" we are fonfident  doc wil be a type of "category"
-            ...(doc as Category), // copy all properties as Category
-        }))
-     }))
+    const formattedData: CustomCategory[] = data.docs.map((doc) => ({
+        ...doc,
+        subcategories:
+            (doc.subcategories?.docs?.map((subDoc) => ({
+                ...subDoc,
+            })) as Category[]) || [],
+    }));
     console.log(data);
     return (
         <html lang="en">
@@ -57,7 +59,7 @@ export default async function RootLayout({
                 <SearchFilters data={formattedData} />
                 <div className="flex-1">
                     {/* Chilren is the page in the body */}
-                    {children} 
+                    {children}
                 </div>
                 <Footer />
             </body>

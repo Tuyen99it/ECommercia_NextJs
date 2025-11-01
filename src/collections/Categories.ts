@@ -20,14 +20,15 @@ const Categories: CollectionConfig = {
             type:"text",
         },
         {
+            
             name:"parent",
             type:"relationship",
-            relationTo:"categories",
+            relationTo:"categories" as any,
             hasMany:false
         },{
             name:"subcategories",
             type:"join",
-            collection:"categories",
+            collection:"categories" as any,
             on:"parent",
             hasMany:true,
             

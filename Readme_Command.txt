@@ -44,7 +44,7 @@ bun.block: block for bun package mamager
 - Integrate Payload
 + run the configuration CLI
 + add a collection schema
-- Install payload: bunx create-payload-app@latest --use-bun
+- Install payload:   
 - Move all folder in app to app/(app)
 - Connect to MongoDB:
 + rerun: bunx create-payload-app@latest --use-bun
@@ -58,4 +58,33 @@ bun.block: block for bun package mamager
 + Display subcategories 
 - Push to github
 - fresh migration database ( drop database ): bun run payload migrate:fresh
+6. Finish Categories
+- seeding Categories
++ Create a seed script: bun run src/seed.ts
+Meet issue:
+PS C:\Users\nguye\Documents\Multi_Ecommercial_Next_JS\ecommercial_nextjs> bun run src/seed.ts
+[22:31:27] WARN: No email adapter provided. Email will be written to console. More info at https://payloadcms.com/docs/email/overview.
+ 5 | import { createOperation } from '../create.js';
+ 6 | export async function createLocal(payload, options) {
+ 7 |     const { collection: collectionSlug, data, depth, disableTransaction, disableVerificationEmail, draft, duplicateFromID, file, filePath, overrideAccess = true, overwriteExistingFiles = false, populate, select, showHiddenFields } = options;
+ 8 |     const collection = payload.collections[collectionSlug];
+ 9 |     if (!collection) {
+10 |         throw new APIError(`The collection with slug ${String(collectionSlug)} can't be found. Create Operation.`);
+                   ^
+APIError: The collection with slug undefined can't be found. Create Operation.
+       data: null,
+ isOperational: true,
+   isPublic: false,
+     status: 500,
 
+      at createLocal (C:\Users\nguye\Documents\Multi_Ecommercial_Next_JS\ecommercial_nextjs\node_modules\payload\dist\collections\operations\local\create.js:10:15)
+      at createLocal (C:\Users\nguye\Documents\Multi_Ecommercial_Next_JS\ecommercial_nextjs\node_modules\payload\dist\collections\operations\local\create.js:6:35)
+      at create (C:\Users\nguye\Documents\Multi_Ecommercial_Next_JS\ecommercial_nextjs\node_modules\payload\dist\index.js:102:23)
+      at <anonymous> (C:\Users\nguye\Documents\Multi_Ecommercial_Next_JS\ecommercial_nextjs\src\seed.ts:142:46)
+
+Bun v1.3.1 (Windows x64)
+- Result TS issue
+- drop database: bun run payload migrate:fresh
++ add new package.json commands
+- Resolve TS issues: CustomCategory
++ Create a " CustomCategory" type
