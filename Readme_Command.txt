@@ -94,3 +94,4 @@ Bun v1.3.1 (Windows x64)
 - Create: trpc/init.ts
 - Create: trpc/routers/_app.ts
 - Create: app/api/trpc/[trpc]/route.ts
+3. Create a Query Client factory: use trpc at client side ("use client")
