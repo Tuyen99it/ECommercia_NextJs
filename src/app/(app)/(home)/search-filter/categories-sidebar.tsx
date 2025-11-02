@@ -19,8 +19,8 @@ export const CategoriesSidebar = ({
     data
 }) => {
     const router=useRouter();
-    const [parentCategories, setParentCategories] = useState<CategoriesGetManyOutput | null>(null)
-    const [selectedCategory, setSelectedCategory] = useState<CategoriesGetManyOutput[1]| null>(null)
+    const [parentCategories, setParentCategories] = useState<CustomCategory[] | null>(null)
+    const [selectedCategory, setSelectedCategory] = useState<CustomCategory| null>(null)
     // if we have parent categories, show those, otherwise show root categories
     const currentCategories = parentCategories ?? data ?? [];
     const handleOpenChange=(open:boolean)=>{

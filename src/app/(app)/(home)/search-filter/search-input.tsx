@@ -9,14 +9,17 @@ import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 interface Props{
     disable?:boolean,
+    data:any
    
 }
  export const SearchInput =({
-    disable
+    disable,
+    data
 }:Props)=>{
+    console.log(data)
     const [isSidebarOpen, setIsSidebarOpen]=useState(false);
-    const trpc=useTRPC()
-    const {data}=useSuspenseQuery(trpc.categories.getMany.queryOptions())
+    // const trpc=useTRPC()
+    // const {data}=useSuspenseQuery(trpc.categories.getMany.queryOptions())
     return (
         <div className=" flex items-center w-full">
             {/* <CategoriesSidebar data={data} open={isSidebarOpen} onOpenChange={setIsSidebarOpen}/> */}
