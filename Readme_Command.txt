@@ -88,3 +88,9 @@ Bun v1.3.1 (Windows x64)
 + add new package.json commands
 - Resolve TS issues: CustomCategory
 + Create a " CustomCategory" type
+7. Add trpc
+1. Install trpc: bun add @trpc/server @trpc/client @trpc/tanstack-react-query @tanstack/react-query@latest zod client-only server-only
+2. Create Trpc router and create example" " Hello world"
+- Create: trpc/init.ts
+- Create: trpc/routers/_app.ts
+- Create: app/api/trpc/[trpc]/route.ts
