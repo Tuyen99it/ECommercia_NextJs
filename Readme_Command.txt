@@ -95,3 +95,7 @@ Bun v1.3.1 (Windows x64)
 - Create: trpc/routers/_app.ts
 - Create: app/api/trpc/[trpc]/route.ts
 3. Create a Query Client factory: use trpc at client side ("use client")
+- Create: trpc/query-client.ts
+4. Create a tRPC client for Client Components
+- Create trpc/client.tsx
+- Mount the provider in the root of your application (e.g. app/layout.tsx when using Next.js).
