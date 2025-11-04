@@ -13,19 +13,15 @@ export const categoriesRouter = createTRPCRouter({
       sort: "name",
     });
 
-    const categories = result.docs.map((category) => ({
-      ...category,
-      subcategories: (Array.isArray(category.subcategories)
-        ? category.subcategories
-        : []
-      ).map((sub) => ({
-        ...(sub as Category),
-        subcategories: undefined,
-      })),
-    }));
-
-    console.log("Loaded categories with subcategories:");
-    console.log(categories);
+        // Format each category and flatten its subcategories
+        const categories = result.docs.map((category) => ({
+            ...category,
+            subcategories: (category.subcategories?.docs ?? []).map((sub) => ({
+                ...(sub as Category),
+                // Remove nested subcategories to prevent deep nesting
+                subcategories: undefined,
+            })),
+        }));
     return categories;
   }),
 });

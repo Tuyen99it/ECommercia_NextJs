@@ -11,7 +11,7 @@ import { CategoriesGetManyOutput } from "@/modules/categories/types";
 interface Props {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    data: CustomCategory;
+    data: CategoriesGetManyOutput;
 }
 export const CategoriesSidebar = ({
     open,
@@ -19,8 +19,8 @@ export const CategoriesSidebar = ({
     data
 }) => {
     const router=useRouter();
-    const [parentCategories, setParentCategories] = useState<CustomCategory[] | null>(null)
-    const [selectedCategory, setSelectedCategory] = useState<CustomCategory| null>(null)
+    const [parentCategories, setParentCategories] = useState<CategoriesGetManyOutput | null>(null)
+    const [selectedCategory, setSelectedCategory] = useState<CategoriesGetManyOutput[1]| null>(null)
     // if we have parent categories, show those, otherwise show root categories
     const currentCategories = parentCategories ?? data ?? [];
     const handleOpenChange=(open:boolean)=>{
@@ -28,9 +28,9 @@ export const CategoriesSidebar = ({
         setParentCategories(null);
         onOpenChange(open)
     }
-    const handleCategoryClick=(category:CustomCategory)=>{
+    const handleCategoryClick=(category:CategoriesGetManyOutput[1])=>{
         if(category.subcategories&&category.subcategories.length>0){
-            setParentCategories(category.subcategories as CustomCategory[]);
+            setParentCategories(category.subcategories as CategoriesGetManyOutput);
             setSelectedCategory(category);
         }
         else{
