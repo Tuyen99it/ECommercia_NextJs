@@ -19,7 +19,7 @@ export const categoriesRouter = createTRPCRouter({
         // Format each category and flatten its subcategories
         const categories = result.docs.map((category) => ({
             ...category,
-            subcategories: (category.subcategories?.doc ?? []).map((sub) => ({
+            subcategories: (category.subcategories?.docs ?? []).map((sub) => ({
                 ...(sub as Category),
                 // Remove nested subcategories to prevent deep nesting
                 subcategories: undefined,
