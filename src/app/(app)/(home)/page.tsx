@@ -3,13 +3,16 @@
 // Imoport useQuery and useTRPC to query data
 import { useQuery } from '@tanstack/react-query'
 import { useTRPC } from '@/trpc/client'
+import { json } from 'zod'
 // Removed incorrect import of useTRPC
 export default  function Home() {
   const trpc = useTRPC()
-  const categories =useQuery(trpc.categories.getMany.queryOptions())
+  // get session
+  const {data} =useQuery(trpc.auth.session.queryOptions())
+
   return (
     <div >
-     Home
+    {JSON.stringify(data?.json,null,2)}
     </div>
   )
 }
