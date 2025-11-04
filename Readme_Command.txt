@@ -99,3 +99,10 @@ Bun v1.3.1 (Windows x64)
 4. Create a tRPC client for Client Components
 - Create trpc/client.tsx
 - Mount the provider in the root of your application (e.g. app/layout.tsx when using Next.js).
+5. Create Trpc for server:
+- Create file: trpc/server.tsx
+
+6. Usage API example
+- TRPC can be used with React Hook at client componets, but should use prefetch data in server to imporveing both first byte time and overall load speed
+- Use prefetch data at server. Page.tsx
+- Create example data: modules/trpc/categories/procedure.ts
