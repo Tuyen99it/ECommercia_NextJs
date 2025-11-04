@@ -1,6 +1,6 @@
 "use client";
 import { CategoryDropdown } from "./category-dropdown";
-import { Category } from "@/payload-types";
+import { Category } from "../../../../../payload-types";
 import { CustomCategory } from "../types";
 import { useEffect, useRef, useState } from "react";
 import withPayload from "@payloadcms/next/withPayload";

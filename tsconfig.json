@@ -23,20 +23,12 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@payload-config": [
-        "./src/payload.config.ts"
-      ]
+      "@/*": ["src/*"],
+      "@payload-config": ["src/payload.config.ts"],
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
-  ],
+   "types": ["node"],
+  "include": ["src", "payload-types.ts", "next-env.d.ts"],
   "exclude": [
     "node_modules"
   ]

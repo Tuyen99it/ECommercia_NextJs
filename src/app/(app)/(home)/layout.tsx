@@ -1,6 +1,6 @@
-import configPromise from '@payload-config'
+import configPromise from '../../../payload.config'
 import { getPayload } from 'payload'
-import { Category } from "@/payload-types"
+import { Category } from "../../../../payload-types"
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";

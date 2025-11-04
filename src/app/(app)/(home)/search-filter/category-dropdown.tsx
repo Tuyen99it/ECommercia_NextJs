@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 import { useState, useRef } from "react";
 import { useDropdownPosition } from "./use-dropdown";
 import { SubCategoryMenu } from "./subcategory-menu";
-import { Category } from "@/payload-types";
+import { Category } from "../../../../../payload-types";
 import { Linden_Hill } from "next/font/google";
 interface Props {
     category: Category;
