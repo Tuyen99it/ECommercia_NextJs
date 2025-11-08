@@ -70,7 +70,8 @@ const Navbar = () => {
                 <div className=" items-center gap-0 hidden lg:flex">
                     <Button variant="secondary"
                             className="border-l border-t-0 broder-b-0 px-12 rounded-none bg-white hoverL bg-pink-400 transition-colors text-lg">
-                        Login
+                       <Link  prefetch href="/sign-up">
+                        Sign up</Link>
                     </Button>
                     <Button variant="secondary"
                             className="border-l border-t-0 broder-b-0 px-12 rounded-none bg-white hoverL bg-pink-400 transition-colors text-lg">

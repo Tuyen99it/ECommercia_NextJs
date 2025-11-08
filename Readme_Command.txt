@@ -139,4 +139,10 @@ fix: .vscode/settings.json
 - Use Authenticated states
 + Display "dashboard" when logged in
 + Display " Library" button when logged in
-
+- Payload auth document: https://payloadcms.com/docs/local-api/overview#auth
+- Add Auth procedures
+- Add Auth screens
++ Signin
++ Signout
++ register
++ Forget Password
