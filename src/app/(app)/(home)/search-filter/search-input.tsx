@@ -4,16 +4,11 @@ import {Input} from "@/components/ui/input";
 import { CategoriesSidebar } from "./categories-sidebar";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useTRPC } from "@/trpc/client";
-import { useSuspenseQuery } from "@tanstack/react-query";
+
+import { CategoriesGetManyOutput } from "@/modules/categories/types";
 interface Props{
     disable?:boolean,
-<<<<<<< HEAD
-    data:any
-   
-=======
-   data:CategoriesGetManyOutput
->>>>>>> 08_Authentication
+   data:any
 }
  export const SearchInput =({
     disable,
@@ -21,12 +16,7 @@ interface Props{
 }:Props)=>{
     console.log(data)
     const [isSidebarOpen, setIsSidebarOpen]=useState(false);
-<<<<<<< HEAD
-    // const trpc=useTRPC()
-    // const {data}=useSuspenseQuery(trpc.categories.getMany.queryOptions())
-=======
     
->>>>>>> 08_Authentication
     return (
         <div className=" flex items-center w-full">
             <CategoriesSidebar  open={isSidebarOpen} onOpenChange={setIsSidebarOpen} data={data}/>

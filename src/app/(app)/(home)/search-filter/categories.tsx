@@ -1,12 +1,7 @@
 "use client";
 import { CategoryDropdown } from "./category-dropdown";
-<<<<<<< HEAD
-import { Category } from "../../../../../payload-types";
-import { CustomCategory } from "../types";
-=======
 import { Category } from "@/payload-types";
 
->>>>>>> 08_Authentication
 import { useEffect, useRef, useState } from "react";
 import withPayload from "@payloadcms/next/withPayload";
 import { Button } from "@/components/ui/button";
