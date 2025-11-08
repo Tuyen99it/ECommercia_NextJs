@@ -39,7 +39,7 @@
     "payload-types.ts",
     "src",
     ".next/types/**/*.ts"
-  ],
+, "src/modules/auth/server/.ts"  ],
   "exclude": [
     "node_modules"
   ]
