@@ -4,6 +4,7 @@ import { headers as getHeaders, cookies as getCookies } from "next/headers";
 import { z } from "zod"
 import { AUTH_COOKIE } from "../constants";
 import { registerSchema } from "../schemas";
+import { error } from "console";
 export const authRouter = createTRPCRouter({
 
     session: baseProcedure.query(async ({ ctx }) => {
@@ -14,20 +15,36 @@ export const authRouter = createTRPCRouter({
     register: baseProcedure
         .input(
             registerSchema
-            
+
 
         )
-        
         .mutation(async ({ input, ctx }) => {
-            
             try {
-
+                // validate email
+                const exiistingData=await ctx.payload.find({
+                    collection:"users",
+                    limit:1,
+                    where:{
+                        username:{
+                            equals:input.email
+                        }
+                    }
+                })
+                const existingUser=exiistingData.docs[0];
+                if(existingUser){
+                    throw new TRPCError({
+                        code:"BAD_REQUEST",
+                        message:"User already taken"
+                    })
+                }
+                console.log("✅ Start create user", typeof(input.email));
                 const created = await ctx.payload.create({
                     collection: "users",
                     data: {
                         email: input.email,
-                        username: input.username,
                         password: input.password,
+                        username: input.username,
+
                     }
                 })
                 console.log("✅ User created:", created.id);

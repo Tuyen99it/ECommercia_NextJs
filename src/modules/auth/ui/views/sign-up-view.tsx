@@ -22,23 +22,15 @@ const poppins = Poppins({
 
 export const SignUpView = () => {
     const trpc = useTRPC()
-    
-    // Fix: Use the correct tRPC mutation syntax
-    const testMutation = useMutation(trpc.test.login.mutationOptions())
 
-    const registerMutation = useMutation({
-        mutationFn: async (input: z.infer<typeof registerSchema>) => {
-            return await trpc.auth.register.mutate(input);
-        },
-        onSuccess: () => {
-            toast.success('Registration successful!');
-            form.reset();
-        },
+    // Fix: Use the correct tRPC mutation syntax
+    // const testMutation = useMutation(trpc.test.login.mutationOptions())
+    const registerMutation = useMutation(trpc.auth.register.mutationOptions({
         onError: (error) => {
             toast.error(error.message || 'Registration failed!');
             console.error('Registration error:', error);
-        },
-    })
+        }
+    }))
 
     const form = useForm<z.infer<typeof registerSchema>>({
         mode: "all",
@@ -51,14 +43,14 @@ export const SignUpView = () => {
     })
 
     const onSubmit = (values: z.infer<typeof registerSchema>) => {
-        console.log('Form values:', values)
+        console.log('Form values:', values.email)
         registerMutation.mutate(values)
     }
 
-    const handleTestLogin = () => {
-        console.log('Testing login with:', { name: "Tuyen" })
-        testMutation.mutate({ name: "Tuyen" })
-    }
+    // const handleTestLogin = () => {
+    //     console.log('Testing login with:', { name: "Tuyen" })
+    //     testMutation.mutate({ name: "Tuyen" })
+    // }
 
     const username = form.watch("username")
     const usernameErrors = form.formState.errors.username;
@@ -78,8 +70,8 @@ export const SignUpView = () => {
                                 <FormItem>
                                     <FormLabel>Username</FormLabel>
                                     <FormControl>
-                                        <Input 
-                                            {...field} 
+                                        <Input
+                                            {...field}
                                             disabled={registerMutation.isPending}
                                         />
                                     </FormControl>
@@ -101,8 +93,8 @@ export const SignUpView = () => {
                                 <FormItem>
                                     <FormLabel>Email</FormLabel>
                                     <FormControl>
-                                        <Input 
-                                            {...field} 
+                                        <Input
+                                            {...field}
                                             type="email"
                                             disabled={registerMutation.isPending}
                                         />
@@ -111,16 +103,16 @@ export const SignUpView = () => {
                                 </FormItem>
                             )}
                         />
-                        
+
                         <FormField
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Password</FormLabel>
                                     <FormControl>
-                                        <Input 
-                                            {...field} 
-                                            type="password" 
+                                        <Input
+                                            {...field}
+                                            type="password"
                                             disabled={registerMutation.isPending}
                                         />
                                     </FormControl>
@@ -128,7 +120,7 @@ export const SignUpView = () => {
                                 </FormItem>
                             )}
                         />
-                        
+
                         <Button
                             disabled={registerMutation.isPending}
                             type="submit"
@@ -141,14 +133,14 @@ export const SignUpView = () => {
                     </form>
                 </Form>
             </div>
-            
+
             <div className="h-screen w-full lg:col-span-2 hidden lg:block"
                 style={{
                     backgroundImage: "url('auth-bg.png')",
                     backgroundSize: "cover",
                     backgroundPosition: "center"
                 }}>
-                <div className="p-4">
+                {/* <div className="p-4">
                     {testMutation.isPending ? (
                         'Testing login...'
                     ) : (
@@ -170,7 +162,7 @@ export const SignUpView = () => {
                             </button>
                         </div>
                     )}
-                </div>
+                </div> */}
             </div>
         </div>
     );
