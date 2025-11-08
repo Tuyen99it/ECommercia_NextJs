@@ -17,3 +17,10 @@ export const registerSchema = z.object({
     )
     .transform((val) => val.toLowerCase()),
 });
+export const loginSchema = z.object({
+
+  email: z.string().email(),
+  password: z.string(),
+
+
+});

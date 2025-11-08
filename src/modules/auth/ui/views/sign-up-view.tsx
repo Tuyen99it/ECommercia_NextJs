@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils';
 import { useTRPC } from '@/trpc/client';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 const poppins = Poppins({
     subsets: ["latin"],
@@ -22,13 +23,16 @@ const poppins = Poppins({
 
 export const SignUpView = () => {
     const trpc = useTRPC()
-
+    const router =useRouter();
     // Fix: Use the correct tRPC mutation syntax
     // const testMutation = useMutation(trpc.test.login.mutationOptions())
     const registerMutation = useMutation(trpc.auth.register.mutationOptions({
         onError: (error) => {
-            toast.error(error.message || 'Registration failed!');
+            toast.error(error.message );
             console.error('Registration error:', error);
+        },
+        onSuccess:()=>{
+            router.push("/")
         }
     }))
 
