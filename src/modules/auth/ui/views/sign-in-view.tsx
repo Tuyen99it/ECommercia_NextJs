@@ -23,18 +23,42 @@ const poppins = Poppins({
 
 export const SignInView = () => {
     const trpc = useTRPC()
-    const router =useRouter();
+    const router = useRouter();
     // Fix: Use the correct tRPC mutation syntax
     // const testMutation = useMutation(trpc.test.login.mutationOptions())
-    const loginMutation = useMutation(trpc.auth.login.mutationOptions({
+    // const loginMutation = useMutation(trpc.auth.login.mutationOptions({
+    //     onError: (error) => {
+    //         toast.error(error.message );
+    //         console.error('Login error:', error);
+    //     },
+    //     onSuccess:()=>{
+    //         router.push("/")
+    //     }
+    // }))
+    // another way to useMutation() with api/users/login
+    const loginMutation = useMutation({
+        // inside mutation is a values that pass from form, and manually post to login
+        mutationFn: async (values: z.infer<typeof loginSchema>) => {
+            const response = await fetch("api/users/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(values)
+            });
+            if (!response.ok) {
+                const error = await response.json()
+                throw new Error(error.message || "Log in failed")
+            }
+        },
         onError: (error) => {
-            toast.error(error.message );
+            toast.error(error.message);
             console.error('Login error:', error);
         },
-        onSuccess:()=>{
+        onSuccess: () => {
             router.push("/")
         }
-    }))
+    })
 
     const form = useForm<z.infer<typeof loginSchema>>({
         mode: "all",
@@ -42,7 +66,7 @@ export const SignInView = () => {
         defaultValues: {
             email: "",
             password: "",
-           
+
         }
     })
 
@@ -65,7 +89,7 @@ export const SignInView = () => {
                         className='flex flex-col gap-8 p-4 lg:p-16'
                     >
                         {/* ... your existing form JSX ... */}
-                       
+
                         <FormField
                             name="email"
                             render={({ field }) => (
