@@ -13,7 +13,7 @@ import { CustomCategory } from "../types";
 interface Props {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    data:CategoriesGetManyOutput
+    data: CategoriesGetManyOutput
 }
 export const CategoriesSidebar = ({
     open,
@@ -27,18 +27,18 @@ export const CategoriesSidebar = ({
     const [selectedCategory, setSelectedCategory] = useState<CategoriesGetManyOutput[1] | null>(null)
     // if we have parent categories, show those, otherwise show root categories
     // Normalize data so it's always an array
-    // const currentCategories:CategoriesGetManyOutput = parentCategories ?? data ?? [];
-const currentCategories =
-  (Array.isArray(parentCategories) && parentCategories) ||
-  (Array.isArray(data) ? data : data?.json ?? []);
+    const currentCategories: CategoriesGetManyOutput = parentCategories ?? data ?? [];
+    // const currentCategories =
+    //   (Array.isArray(parentCategories) && parentCategories) ||
+    //   (Array.isArray(data) ? data : data?.json ?? []);
     const handleOpenChange = (open: boolean) => {
         setSelectedCategory(null)
         setParentCategories(null);
         onOpenChange(open)
     }
-    const handleCategoryClick = (category: CustomCategory) => {
+    const handleCategoryClick = (category: CategoriesGetManyOutput[1]) => {
         if (category.subcategories && category.subcategories.length > 0) {
-            setParentCategories(category.subcategories as CustomCategory[]);
+            setParentCategories(category.subcategories as CategoriesGetManyOutput);
             setSelectedCategory(category);
         }
         else {
