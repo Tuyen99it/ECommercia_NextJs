@@ -7,11 +7,21 @@ export const Users: CollectionConfig = {
   },
   auth: true,
   fields: [
+<<<<<<< HEAD
+=======
+    // Email added by default
+    // Add more fields as needed
+>>>>>>> 08_Authentication
     {
       name:"username",
       required:true,
       unique:true,
       type:"text"
+<<<<<<< HEAD
+=======
+
+>>>>>>> 08_Authentication
     }
   ],
-}
+};
+

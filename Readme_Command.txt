@@ -128,6 +128,7 @@ fix: .vscode/settings.json
 - Use Infering Type: https://trpc.io/docs/client/react/infer-types: modules/categories/server/types.ts
 - Use Infering type in CustomCategory: change CustomCategory to CategoriesGetManyOutput
 8. Authentication
+<<<<<<< HEAD
 8.1 Content
 - Modify "userName" collection
 + Add " userName" field
@@ -138,3 +139,23 @@ fix: .vscode/settings.json
 - Use Authentication state
 + Display "dashboard" when Login
 + Display "library" when login
+=======
+8.1 Contents
+- Modify " Users" collections
++ Add "userName" field
+- Create auth procedures
++ use payload auth utils
+- Create auth screens
++ Login view
++ register view
+- Use Authenticated states
++ Display "dashboard" when logged in
++ Display " Library" button when logged in
+- Payload auth document: https://payloadcms.com/docs/local-api/overview#auth
+- Add Auth procedures
+- Add Auth screens
++ Signin
++ Signout
++ register
++ Forget Password
+>>>>>>> 08_Authentication

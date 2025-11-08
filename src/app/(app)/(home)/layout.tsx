@@ -6,8 +6,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import Navbar from "./navbar";
 import Footer from "./footer";
-import {SearchFilters, SearchFiltersSkeleton} from "./search-filter";
-import { CustomCategory } from './types';
+import { SearchFilters, SearchFiltersSkeleton } from "./search-filter";
 import { getQueryClient, trpc } from '@/trpc/server';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Suspense } from 'react';
@@ -40,27 +39,25 @@ export default async function RootLayout({
         trpc.categories.getMany.queryOptions(),
     )
     return (
-        <html lang="en">
-            <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-            >
-                <Navbar />
-                {/* get data user Hydration Bondary and Leveraging Suspense */}
-                <HydrationBoundary state={dehydrate(queryClient)}>
-                    <Suspense fallback={
-                        <SearchFiltersSkeleton/>
-                        }>
-                        <SearchFilters />
-                    </Suspense>
+       
+        <div>
+            <Navbar />
+            {/* get data user Hydration Bondary and Leveraging Suspense */}
+            <HydrationBoundary state={dehydrate(queryClient)}>
+                <Suspense fallback={
+                    <SearchFiltersSkeleton />
+                }>
+                    <SearchFilters />
+                </Suspense>
 
-                </HydrationBoundary>
+            </HydrationBoundary>
 
-                <div className="flex-1">
-                    {/* Chilren is the page in the body */}
-                    {children}
-                </div>
-                <Footer />
-            </body>
-        </html>
+            <div className="flex-1">
+                {/* Chilren is the page in the body */}
+                {children}
+            </div>
+            <Footer />
+        </div>
+      
     );
 }

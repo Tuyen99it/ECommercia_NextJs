@@ -2,56 +2,73 @@
 import { useRouter } from "next/navigation";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useState } from "react";
-import { CustomCategory } from '../types';
+
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { SubCategoryMenu } from './subcategory-menu';
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
-
+import { useTRPC } from "@/trpc/client";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { CustomCategory } from "../types";
 interface Props {
     open: boolean;
     onOpenChange: (open: boolean) => void;
+<<<<<<< HEAD
     data: CategoriesGetManyOutput;
+=======
+    data: CategoriesGetManyOutput
+>>>>>>> 08_Authentication
 }
 export const CategoriesSidebar = ({
     open,
     onOpenChange,
     data
-}) => {
-    const router=useRouter();
+
+}: Props) => {
+
+    const router = useRouter();
     const [parentCategories, setParentCategories] = useState<CategoriesGetManyOutput | null>(null)
-    const [selectedCategory, setSelectedCategory] = useState<CategoriesGetManyOutput[1]| null>(null)
+    const [selectedCategory, setSelectedCategory] = useState<CategoriesGetManyOutput[1] | null>(null)
     // if we have parent categories, show those, otherwise show root categories
-    const currentCategories = parentCategories ?? data ?? [];
-    const handleOpenChange=(open:boolean)=>{
+    // Normalize data so it's always an array
+    const currentCategories: CategoriesGetManyOutput = parentCategories ?? data ?? [];
+    // const currentCategories =
+    //   (Array.isArray(parentCategories) && parentCategories) ||
+    //   (Array.isArray(data) ? data : data?.json ?? []);
+    const handleOpenChange = (open: boolean) => {
         setSelectedCategory(null)
         setParentCategories(null);
         onOpenChange(open)
     }
+<<<<<<< HEAD
     const handleCategoryClick=(category:CategoriesGetManyOutput[1])=>{
         if(category.subcategories&&category.subcategories.length>0){
+=======
+    const handleCategoryClick = (category: CategoriesGetManyOutput[1]) => {
+        if (category.subcategories && category.subcategories.length > 0) {
+>>>>>>> 08_Authentication
             setParentCategories(category.subcategories as CategoriesGetManyOutput);
             setSelectedCategory(category);
         }
-        else{
+        else {
             // this is a leaf category ( no suvcategories)
-            if (parentCategories&& selectedCategory){
+            if (parentCategories && selectedCategory) {
                 // this is a sub category -navigate to /category/subcategory
-                router.push (`/${selectedCategory.slug}/${category.slug}`)
-            } else{
+                router.push(`/${selectedCategory.slug}/${category.slug}`)
+            } else {
                 // this is a main category -navigate to/category
-                if(category.slug==="all"){
+                if (category.slug === "all") {
                     router.push("/")
-                } else{
+                } else {
                     router.push(`/${category.slug}`);
                 }
             }
             handleOpenChange(false);
         }
     }
-    const backgroundColor=selectedCategory?.color||"white";
-    const handleBackClick=()=>{
-        if(parentCategories){
+    const backgroundColor = selectedCategory?.color || "white";
+    const handleBackClick = () => {
+        if (parentCategories) {
             setParentCategories(null)
             setSelectedCategory(null)
         }
@@ -67,7 +84,7 @@ export const CategoriesSidebar = ({
                     </SheetTitle>
                 </SheetHeader>
                 <ScrollArea className="flex flex-col overflow-y-auto h-full pb-2">
-                    {parentCategories && (<button onClick={ handleBackClick}
+                    {parentCategories && (<button onClick={handleBackClick}
                         className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
                     >
                         <ChevronLeftIcon className="size-4 mr-2" />
@@ -77,14 +94,14 @@ export const CategoriesSidebar = ({
                     {currentCategories.map((category) => (
                         <button
                             key={category.slug}
-                            onClick={()=>handleCategoryClick(category)}
+                            onClick={() => handleCategoryClick(category)}
                             className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center justify-between text-base font-medium cursor-pointer"
                         >
                             {category.name}
                             {category.subcategories && category.subcategories.length > 0 &&
                                 (<ChevronRightIcon className="size-4 " />)
                             }
-                            
+
                         </button>
                     ))}
                 </ScrollArea>

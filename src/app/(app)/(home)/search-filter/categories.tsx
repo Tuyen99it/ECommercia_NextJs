@@ -1,24 +1,34 @@
 "use client";
 import { CategoryDropdown } from "./category-dropdown";
+<<<<<<< HEAD
 import { Category } from "../../../../../payload-types";
 import { CustomCategory } from "../types";
+=======
+import { Category } from "@/payload-types";
+
+>>>>>>> 08_Authentication
 import { useEffect, useRef, useState } from "react";
 import withPayload from "@payloadcms/next/withPayload";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ListFilterIcon } from "lucide-react";
 import { CategoriesSidebar } from "./categories-sidebar";
+import { CategoriesGetManyOutput } from "@/modules/categories/types";
+import { useTRPC } from "@/trpc/client";
+import { useSuspenseQuery } from "@tanstack/react-query";
 // Define or import the Category type
 
 
-interface Props {
-    data: any;
-}
+
 
 export const Categories = ({
-    data,
-}: Props) => {
-
+    
+}) => {
+    const trpc=useTRPC()
+    let {data}=useSuspenseQuery(trpc.categories.getMany.queryOptions())
+     data=Array.isArray(data) ? data : data?.json ?? []
+    console.log("categories")
+    console.log(data)
     // reponsive categories
     const containerRef = useRef<HTMLDivElement>(null);
     const measureRef = useRef<HTMLDivElement>(null);
@@ -56,14 +66,14 @@ export const Categories = ({
     return (
         <div className="relative w-full">
             {/* Categories sidebar */}
-            <CategoriesSidebar open={isSideBarOpen} onOpenChange={setIsSideBarOpen} data={data}/>
+            <CategoriesSidebar open={isSideBarOpen} onOpenChange={setIsSideBarOpen} />
             {/* Hidden div to measure all items*/}
             <div
                 ref={measureRef}
                 className="absolute opacity-0 pointer-events-none flex"
                 style={{ position: "fixed", top: -9999, left: -9999 }}
             >
-                {data.map((category: Category) => (
+                {data.map((category: CategoriesGetManyOutput[1]) => (
                     <div key={category.id} >
                         <CategoryDropdown
                             category={category}

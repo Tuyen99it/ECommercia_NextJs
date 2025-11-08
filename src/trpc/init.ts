@@ -22,7 +22,18 @@ const t = initTRPC.create({
 // Base router and procedure helpers
 export const createTRPCRouter = t.router;
 export const createCallerFactory = t.createCallerFactory;
-export const baseProcedure = t.procedure.use(async ({next})=>{
-  const payload =await getPayload({config});
-  return next({ctx:{payload}}) // change name payload to db
-})
+export const baseProcedure = t.procedure.use(async (opts) => {
+  try {
+    const payload = await getPayload({ config });
+    return opts.next({
+      ctx: {
+        ...opts.ctx, // ✅ merge existing context (userId etc.)
+        payload,     // ✅ add payload safely
+      },
+    });
+  } catch (err) {
+    console.error("Payload connection failed:", err);
+    // you can return ctx without payload instead of throwing
+    return opts.next({ ctx: { ...opts.ctx, payload: null } });
+  }
+});
