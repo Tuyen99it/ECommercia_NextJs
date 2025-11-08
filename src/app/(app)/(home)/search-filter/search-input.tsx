@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
 interface Props{
     disable?:boolean,
-   data:CategoriesGetManyOutput
+   data:any
 }
  export const SearchInput =({
     disable,

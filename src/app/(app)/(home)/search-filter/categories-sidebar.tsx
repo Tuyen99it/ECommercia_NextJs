@@ -13,11 +13,7 @@ import { CustomCategory } from "../types";
 interface Props {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-<<<<<<< HEAD
-    data: CategoriesGetManyOutput;
-=======
     data: CategoriesGetManyOutput
->>>>>>> 08_Authentication
 }
 export const CategoriesSidebar = ({
     open,
@@ -40,13 +36,8 @@ export const CategoriesSidebar = ({
         setParentCategories(null);
         onOpenChange(open)
     }
-<<<<<<< HEAD
-    const handleCategoryClick=(category:CategoriesGetManyOutput[1])=>{
-        if(category.subcategories&&category.subcategories.length>0){
-=======
     const handleCategoryClick = (category: CategoriesGetManyOutput[1]) => {
         if (category.subcategories && category.subcategories.length > 0) {
->>>>>>> 08_Authentication
             setParentCategories(category.subcategories as CategoriesGetManyOutput);
             setSelectedCategory(category);
         }
