@@ -12,7 +12,7 @@ import { Poppins } from 'next/font/google';
 
 import { cn } from '@/lib/utils';
 import { useTRPC } from '@/trpc/client';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
@@ -23,7 +23,8 @@ const poppins = Poppins({
 
 export const SignUpView = () => {
     const trpc = useTRPC()
-    const router =useRouter();
+    const queryClient=useQueryClient()
+    const router =useRouter();invalidateQueries(trpc.auth.session.queryFilter())
     // Fix: Use the correct tRPC mutation syntax
     // const testMutation = useMutation(trpc.test.login.mutationOptions())
     const registerMutation = useMutation(trpc.auth.register.mutationOptions({
@@ -31,7 +32,8 @@ export const SignUpView = () => {
             toast.error(error.message );
             console.error('Registration error:', error);
         },
-        onSuccess:()=>{
+        onSuccess:async ()=>{
+            await queryClient.invalidateQueries(trpc.auth.session.queryFilter())
             router.push("/")
         }
     }))

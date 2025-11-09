@@ -5,6 +5,7 @@ import { z } from "zod"
 import { AUTH_COOKIE } from "../constants";
 import { registerSchema, loginSchema } from "../schemas";
 import { error } from "console";
+import { generateAuthCookie } from "../utils";
 export const authRouter = createTRPCRouter({
 
     session: baseProcedure.query(async ({ ctx }) => {
@@ -62,7 +63,7 @@ export const authRouter = createTRPCRouter({
                 }
                 const cookies = await getCookies();
                 cookies.set({
-                    name: AUTH_COOKIE,
+                    name: `${ctx.payload.config.cookiePrefix}-token`,// payload-token by default
                     value: data.token,
                     httpOnly: true,
                     path: "/"
@@ -104,16 +105,10 @@ export const authRouter = createTRPCRouter({
                     message: "Failed to login"
                 })
             }
-            const cookies = await getCookies();
-            cookies.set({
-                name: AUTH_COOKIE,
-                value: data.token,
-                httpOnly: true,
-                path: "/"
-                // TODO: NEsure cross-domain cookie sharing
-                // runroad.com // initial cookie
-                // 
-            })
+           await generateAuthCookie({
+            prefix:ctx.payload.config.cookiePrefix,
+            value:data.token
+           })
             return data;
         }),
     logout: baseProcedure.mutation(async () => {

@@ -12,7 +12,7 @@ import { Poppins } from 'next/font/google';
 
 import { cn } from '@/lib/utils';
 import { useTRPC } from '@/trpc/client';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
@@ -23,42 +23,47 @@ const poppins = Poppins({
 
 export const SignInView = () => {
     const trpc = useTRPC()
+    const queryClient=useQueryClient()
     const router = useRouter();
-    // Fix: Use the correct tRPC mutation syntax
-    // const testMutation = useMutation(trpc.test.login.mutationOptions())
-    // const loginMutation = useMutation(trpc.auth.login.mutationOptions({
-    //     onError: (error) => {
-    //         toast.error(error.message );
-    //         console.error('Login error:', error);
-    //     },
-    //     onSuccess:()=>{
-    //         router.push("/")
-    //     }
-    // }))
-    // another way to useMutation() with api/users/login
-    const loginMutation = useMutation({
-        // inside mutation is a values that pass from form, and manually post to login
-        mutationFn: async (values: z.infer<typeof loginSchema>) => {
-            const response = await fetch("api/users/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(values)
-            });
-            if (!response.ok) {
-                const error = await response.json()
-                throw new Error(error.message || "Log in failed")
-            }
-        },
+    //Fix: Use the correct tRPC mutation syntax
+    const testMutation = useMutation(trpc.test.login.mutationOptions())
+    const loginMutation = useMutation(trpc.auth.login.mutationOptions({
         onError: (error) => {
             toast.error(error.message);
             console.error('Login error:', error);
         },
-        onSuccess: () => {
+        onSuccess: async() => {
+            // get data login using queryClient
+            await queryClient.invalidateQueries(trpc.auth.session.queryFilter())
             router.push("/")
         }
-    })
+    }))
+    // another way to useMutation() with api/users/login
+    // const loginMutation = useMutation({
+    //     // inside mutation is a values that pass from form, and manually post to login
+    //     mutationFn: async (values: z.infer<typeof loginSchema>) => {
+    //         const response = await fetch("api/users/login", {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             },
+    //             body: JSON.stringify(values)
+    //         });
+    //         if (!response.ok) {
+    //             const error = await response.json()
+    //             throw new Error(error.message || "Log in failed")
+    //         }
+    //     },
+    //     onError: (error) => {
+    //         toast.error(error.message);
+    //         console.error('Login error:', error);
+    //     },
+    //     onSuccess: () => {
+    //         router.push("/")
+    //     }
+    // })
+
+
 
     const form = useForm<z.infer<typeof loginSchema>>({
         mode: "all",

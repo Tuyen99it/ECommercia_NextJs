@@ -14,4 +14,6 @@ export const trpc = createTRPCOptionsProxy({
   router: appRouter,
   queryClient: getQueryClient,
 });
+// create a caller server to get data from server component
+export const caller= appRouter.createCaller(createTRPCContext)
 
