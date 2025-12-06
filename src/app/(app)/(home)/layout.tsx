@@ -4,9 +4,9 @@ import { Category } from "../../../payload-types"
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
-import Navbar from "./navbar";
-import Footer from "./footer";
-import { SearchFilters, SearchFiltersSkeleton } from "./search-filter";
+import Navbar from "@/modules/home/ui/navbar";
+import Footer from "@/modules/home/ui/footer";
+import { SearchFilters, SearchFiltersSkeleton } from "../../../modules/home/ui/components/search-filter";
 import { getQueryClient, trpc } from '@/trpc/server';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Suspense } from 'react';
@@ -48,6 +48,7 @@ export default async function RootLayout({
                     <SearchFiltersSkeleton />
                 }>
                     <SearchFilters />
+
                 </Suspense>
 
             </HydrationBoundary>

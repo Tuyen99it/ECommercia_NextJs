@@ -9,7 +9,7 @@ import { SubCategoryMenu } from './subcategory-menu';
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { CustomCategory } from "../types";
+import { CustomCategory } from "../../../../../app/(app)/(home)/types";
 interface Props {
     open: boolean;
     onOpenChange: (open: boolean) => void;

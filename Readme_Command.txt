@@ -146,4 +146,11 @@ fix: .vscode/settings.json
 + Signout
 + register
 + Forget Password
+10. Categories Page
+- Implement Category and Subcategory page
++ Show current category main style
++ Show breadcrumbs
+- Refactor component to their modules
+- Push github
+
 

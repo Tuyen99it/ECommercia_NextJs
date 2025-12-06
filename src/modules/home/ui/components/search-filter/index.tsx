@@ -15,7 +15,7 @@ export const SearchFilters = () => {
             <div className="hidden lg:block">
                 <Categories  />
             </div>
-
+            {/* show breadcrumbs */}
         </div>
     )
 }
