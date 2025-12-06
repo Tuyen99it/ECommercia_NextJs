@@ -7,23 +7,22 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
 import { useTRPC } from "@/trpc/client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 interface Props{
     disable?:boolean,
-   data:CategoriesGetManyOutput
+  
 }
  export const SearchInput =({
     disable,
-    data
+   
 }:Props)=>{
-    console.log(data)
-    const [isSidebarOpen, setIsSidebarOpen]=useState(false);
     const trpc=useTRPC()
+    const { data } = useSuspenseQuery(trpc.categories.getMany.queryOptions());
+    const [isSidebarOpen, setIsSidebarOpen]=useState(false);
     const session=useQuery(trpc.auth.session.queryOptions())
-    
     return (
         <div className=" flex items-center w-full">
-            <CategoriesSidebar  open={isSidebarOpen} onOpenChange={setIsSidebarOpen} data={data}/>
+            <CategoriesSidebar  open={isSidebarOpen} onOpenChange={setIsSidebarOpen}/>
          
             <div className=" flex flex-col gap-2 relative w-full">
                 <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-neutral-500"/>

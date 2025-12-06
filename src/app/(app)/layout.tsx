@@ -4,6 +4,7 @@ import "./globals.css";
 import { TRPCReactProvider } from "@/trpc/client";
 import { getPayload } from "payload";
 import configPromise from '../../payload.config';
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +34,7 @@ export default function RootLayout({
         <TRPCReactProvider>
           {children}
         </TRPCReactProvider>
-
+        <Toaster />
       </body>
     </html>
   );

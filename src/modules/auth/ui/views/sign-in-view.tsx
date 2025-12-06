@@ -26,15 +26,17 @@ export const SignInView = () => {
     const queryClient=useQueryClient()
     const router = useRouter();
     //Fix: Use the correct tRPC mutation syntax
-    const testMutation = useMutation(trpc.test.login.mutationOptions())
     const loginMutation = useMutation(trpc.auth.login.mutationOptions({
         onError: (error) => {
+            console.log("Login failure");
             toast.error(error.message);
-            console.error('Login error:', error);
+            console.error('Login error:', error.message);
         },
         onSuccess: async() => {
+  
             // get data login using queryClient
             await queryClient.invalidateQueries(trpc.auth.session.queryFilter())
+          
             router.push("/")
         }
     }))

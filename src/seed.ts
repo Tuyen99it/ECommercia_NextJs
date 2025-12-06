@@ -140,7 +140,8 @@ const seed = async () => {
     const payload = await getPayload({ config });
     for (const category of categories) {
         const parentCategory = await payload.create({
-            slug: "categories",
+            slug:"categories",
+            collection: "categories",
             data: {
                 name: category.name,
                 slug: category.slug,
@@ -151,6 +152,7 @@ const seed = async () => {
         for (const subCategory of category.subcategories || []) {
             await payload.create({
                 slug: "categories",
+                collection:"categories",
                 data: {
                     name: subCategory.name,
                     slug: subCategory.slug,

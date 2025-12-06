@@ -13,22 +13,23 @@ import { CustomCategory } from "../types";
 interface Props {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    data: CategoriesGetManyOutput
+   
 }
 export const CategoriesSidebar = ({
     open,
     onOpenChange,
-    data
+   
 
 }: Props) => {
-
+    const trpc=useTRPC();
+    const {data}=useSuspenseQuery(trpc.categories.getMany.queryOptions());
     const router = useRouter();
     const [parentCategories, setParentCategories] = useState<CategoriesGetManyOutput | null>(null)
-    const [selectedCategory, setSelectedCategory] = useState<CategoriesGetManyOutput[1] | null>(null)
+    const [selectedCategory, setSelectedCategory] = useState<CategoriesGetManyOutput[number] | null>(null)
     // if we have parent categories, show those, otherwise show root categories
     // Normalize data so it's always an array
-    const currentCategories: CategoriesGetManyOutput = parentCategories ?? data ?? [];
-    // const currentCategories =
+    const currentCategories = parentCategories ?? data.json ?? [];
+    // const currentCategories 
     //   (Array.isArray(parentCategories) && parentCategories) ||
     //   (Array.isArray(data) ? data : data?.json ?? []);
     const handleOpenChange = (open: boolean) => {
@@ -36,9 +37,10 @@ export const CategoriesSidebar = ({
         setParentCategories(null);
         onOpenChange(open)
     }
-    const handleCategoryClick = (category: CategoriesGetManyOutput[1]) => {
+    const handleCategoryClick = (category: CategoriesGetManyOutput[number]) => {
         if (category.subcategories && category.subcategories.length > 0) {
-            setParentCategories(category.subcategories as CategoriesGetManyOutput);
+            // cast through unknown when narrowing incompatible array element types
+            setParentCategories(category.subcategories as unknown as CategoriesGetManyOutput);
             setSelectedCategory(category);
         }
         else {

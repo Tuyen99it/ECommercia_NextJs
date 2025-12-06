@@ -22,6 +22,7 @@ export const categoriesRouter = createTRPCRouter({
                 subcategories: undefined,
             })),
         }));
+        // console.log(JSON.stringify(categories,null,2));
     return categories;
   }),
 });
