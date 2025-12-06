@@ -36,7 +36,7 @@
   ],
   "include": [
     "next-env.d.ts",
-    "payload-types.ts",
+    "src/payload-types.ts",
     "src",
     ".next/types/**/*.ts"
   ],

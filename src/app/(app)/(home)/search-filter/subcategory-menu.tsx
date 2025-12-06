@@ -1,6 +1,6 @@
 
 import { cn } from "@/lib/utils";
-import { Category } from "../../../../../payload-types";
+import { Category } from "../../../../payload-types";
 import Link from "next/link";
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
 // Define or import the Category type
