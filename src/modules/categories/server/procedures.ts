@@ -1,5 +1,5 @@
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
-import { Category } from "../../../../payload-types";
+import { Category } from "../../../payload-types";
 
 export const categoriesRouter = createTRPCRouter({
   getMany: baseProcedure.query(async ({ ctx }) => {
@@ -22,6 +22,7 @@ export const categoriesRouter = createTRPCRouter({
                 subcategories: undefined,
             })),
         }));
+        // console.log(JSON.stringify(categories,null,2));
     return categories;
   }),
 });
