@@ -25,7 +25,7 @@ export default async function HomeLayout({
         trpc.categories.getMany.queryOptions(),
     )
    
-
+    
     return (
        
         <div>

@@ -152,7 +152,11 @@ fix: .vscode/settings.json
 + Show breadcrumbs
 - Refactor component to their modules
 - Push github
+11. Products
+- Add "products" collection
+- Load product based on category
++ prefetch in RSC
++ load w/suspense in client component
+- reflector component to their modules
+- Push to github
 
-
-- Push to Github
-10. CategoryPage

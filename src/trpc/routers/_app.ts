@@ -3,6 +3,7 @@ import { initTRPC } from '@trpc/server';
 import { baseProcedure, createTRPCRouter } from '../init';
 import { categoriesRouter } from '../../modules/categories/server/procedures';
 import { authRouter } from '@/modules/auth/server/procedures';
+import { ProductsRouter } from '@/modules/product/server/procedures';
 export const t = initTRPC.create();
 const appRouter1 = t.router({
   // Create procedure at path 'login'
@@ -30,6 +31,7 @@ export const appRouter = createTRPCRouter({
     test:appRouter1,
     auth: authRouter,
     categories: categoriesRouter,
+    products:ProductsRouter,
 
 });
 // export type definition of API
