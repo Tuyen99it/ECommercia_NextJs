@@ -1,18 +1,20 @@
-interface Props{
-    params:Promise<{
-        category:string;
-        subcategory:string;
-    }>
-}
-const Page= async ({params,}:Props)=>{
-    const {category,subcategory} =await params;
-    return (
-        <div>
-            Category page:{category}
-        </div>
-    )
-}
+// create dynamic router for category
 
-// http:localhost:300/education
-// http:localhost:300/[category]/[subcategory]
+import { defaultColors } from "@payloadcms/richtext-lexical"
+
+// localhost:3000/[category]/page
+interface Props{
+  params:Promise<{
+    category:string
+  }>
+}
+const Page =async({params}:Props)=> {
+  const {category} =await params;
+
+  return (
+    <div >
+    Category page :{category}
+    </div>
+  )
+}
 export default Page;

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation"; // next hook
-import NavbarSideBar from "@/modules/home/ui/navbar-sidebar";
+import NavbarSideBar from "./components/navbar-sidebar";
 import { useState } from "react";
 import { MenuIcon } from "lucide-react";
 import { useTRPC } from "@/trpc/client";
