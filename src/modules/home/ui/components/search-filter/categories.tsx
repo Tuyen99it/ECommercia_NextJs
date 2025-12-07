@@ -1,6 +1,7 @@
 "use client";
 import { CategoryDropdown } from "./category-dropdown";
 import { Category } from "@/payload-types";
+import { useParams } from "next/navigation";
 
 import { useEffect, useRef, useState } from "react";
 import withPayload from "@payloadcms/next/withPayload";
@@ -11,19 +12,21 @@ import { CategoriesSidebar } from "./categories-sidebar";
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
+
+import Link from 'next/link';
+import { BreadcrumbNav } from "../breadcrumnav";
 // Define or import the Category type
 
 
 
 
 export const Categories = ({
-    
+
 }) => {
-    const trpc=useTRPC()
-    let {data}=useSuspenseQuery(trpc.categories.getMany.queryOptions())
-     data=Array.isArray(data) ? data : data?.json ?? []
-    console.log("categories")
-    console.log(data)
+    const trpc = useTRPC()
+    let { data } = useSuspenseQuery(trpc.categories.getMany.queryOptions())
+    data = Array.isArray(data) ? data : data?.json ?? []
+    const params = useParams();
     // reponsive categories
     const containerRef = useRef<HTMLDivElement>(null);
     const measureRef = useRef<HTMLDivElement>(null);
@@ -35,6 +38,17 @@ export const Categories = ({
     const aciveCategoryIndex = data.findIndex((cat) => cat.slug === activeCategory);
     const isActiveCategoriesHidden = aciveCategoryIndex >= visibleCount && aciveCategoryIndex !== -1;
 
+    console.log(" Active category index " + aciveCategoryIndex);
+    // get active category
+    // get categoryParams
+    const activeCategoryParam = params.category as string || undefined;
+    const activeSubCategoryParam = params.subcategory as string || undefined;
+
+    const activeCategoryName = data.find((cat) => cat.slug === activeCategoryParam);
+    // const activeSubCategoryName = activeCategoryName?.subcategories?.find(
+    //     (sub) => sub.slug === activeSubCategoryParam
+    // );
+    const style=activeCategoryName?.color||"yellow"
     useEffect(() => {
         // use to hind the category that is over viewport
         const calculateVisible = () => {
@@ -59,7 +73,7 @@ export const Categories = ({
         return () => resizeObserver.disconnect();
     }, [data.length])
     return (
-        <div className="relative w-full">
+        <div className="relative w-full" >
             {/* Categories sidebar */}
             <CategoriesSidebar open={isSideBarOpen} onOpenChange={setIsSideBarOpen} />
             {/* Hidden div to measure all items*/}
@@ -69,6 +83,7 @@ export const Categories = ({
                 style={{ position: "fixed", top: -9999, left: -9999 }}
             >
                 {data.map((category: CategoriesGetManyOutput[1]) => (
+
                     <div key={category.id} >
                         <CategoryDropdown
                             category={category}
@@ -76,6 +91,8 @@ export const Categories = ({
                             isNavigationHovered={false}
                         />
                     </div>
+
+
                 ))}
             </div>
             {/* Visible items */}
@@ -97,13 +114,18 @@ export const Categories = ({
                 >
                     <Button className={cn("h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-white hover:border-primary text-black",
                         isActiveCategoriesHidden && isAnyHovered && "bg-white border-primary "
-                    )} onClick={()=>setIsSideBarOpen(true)}>
+                    )} onClick={() => setIsSideBarOpen(true)}>
                         ViewAll
                         <ListFilterIcon className="ml-2" />
 
                     </Button>
                 </div>
             </div>
+           {
+                activeCategoryParam||activeSubCategoryParam ? <div className="mt-4">
+                <BreadcrumbNav activeCategoryParam={activeCategoryParam} activeSubCategoryParam={activeSubCategoryParam} />
+            </div> : null
+           }
 
         </div>
     );

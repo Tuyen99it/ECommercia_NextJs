@@ -1,6 +1,6 @@
 "use client"
 import { Button } from "@/components/ui/button";
-import { Link } from "lucide-react";
+import Link from 'next/link'
 import { cn } from "@/lib/utils"
 import { useState, useRef } from "react";
 import { useDropdownPosition } from "./use-dropdown";
@@ -39,8 +39,9 @@ export const CategoryDropdown = ({
                         isActive && !isNavigationHovered && "bg-white border-primary"
                     )}>
                         <Link
-                        href={`/${category.slug==="all"?"":category.slug}`}/>
+                        href={`/${category.slug==="all"?"":category.slug}`}>
                     {category.name}
+                    </Link>
                 </Button>
                 {category.subcategories && category.subcategories.length > 0 && (
                     <div className={cn(
