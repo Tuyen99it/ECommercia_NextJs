@@ -146,4 +146,15 @@ fix: .vscode/settings.json
 + Signout
 + register
 + Forget Password
+9. Authstate
+- Alternative ways to persist logged in states
++ manually using "next.headers"
+  + use "payload.config.cookiePrefix"
++ using Payload "REST API"
+  + automatically set cookie on Login
+- Use authenticated states
+  + Display "dashboard" button when logged in
+  + Display " library " button when loggin
 
+- Push to Github
+10. CategoryPage

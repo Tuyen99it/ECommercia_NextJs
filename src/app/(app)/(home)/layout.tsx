@@ -1,15 +1,13 @@
-import configPromise from '../../../payload.config'
-import { getPayload } from 'payload'
-import { Category } from "../../../../payload-types"
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
-import Navbar from "./navbar";
-import Footer from "./footer";
-import { SearchFilters, SearchFiltersSkeleton } from "./search-filter";
+import Navbar from "@/modules/home/ui/navbar";
+import Footer from "@/modules/home/ui/footer";
+
 import { getQueryClient, trpc } from '@/trpc/server';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Suspense } from 'react';
+import { SearchFilters,SearchFiltersSkeleton } from '@/modules/home/ui/search-filter';
 
 
 const geistSans = Geist({

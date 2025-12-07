@@ -24,7 +24,6 @@ export const SearchFiltersSkeleton = () => {
     const trpc = useTRPC();
     let { data } = useSuspenseQuery(trpc.categories.getMany.queryOptions());
     data = data?.json;
-    console.log(data);
     return (
         <div className="px-4 lg:px-12 py-8 border-b flex flex-col gap-4 w-full">
             <SearchInput data={data} disable />

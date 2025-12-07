@@ -24,7 +24,7 @@ const poppins = Poppins({
 export const SignUpView = () => {
     const trpc = useTRPC()
     const queryClient=useQueryClient()
-    const router =useRouter();invalidateQueries(trpc.auth.session.queryFilter())
+    const router =useRouter();
     // Fix: Use the correct tRPC mutation syntax
     // const testMutation = useMutation(trpc.test.login.mutationOptions())
     const registerMutation = useMutation(trpc.auth.register.mutationOptions({

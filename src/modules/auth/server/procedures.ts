@@ -20,23 +20,23 @@ export const authRouter = createTRPCRouter({
         .mutation(async ({ input, ctx }) => {
             try {
                 // validate email
-                const exiistingData=await ctx.payload.find({
-                    collection:"users",
-                    limit:1,
-                    where:{
-                        username:{
-                            equals:input.email
+                const exiistingData = await ctx.payload.find({
+                    collection: "users",
+                    limit: 1,
+                    where: {
+                        username: {
+                            equals: input.email
                         }
                     }
                 })
-                const existingUser=exiistingData.docs[0];
-                if(existingUser){
+                const existingUser = exiistingData.docs[0];
+                if (existingUser) {
                     throw new TRPCError({
-                        code:"BAD_REQUEST",
-                        message:"User already taken"
+                        code: "BAD_REQUEST",
+                        message: "User already taken"
                     })
                 }
-                console.log("✅ Start create user", typeof(input.email));
+                console.log("✅ Start create user", typeof (input.email));
                 const created = await ctx.payload.create({
                     collection: "users",
                     data: {
@@ -105,10 +105,10 @@ export const authRouter = createTRPCRouter({
                     message: "Failed to login"
                 })
             }
-           await generateAuthCookie({
-            prefix:ctx.payload.config.cookiePrefix,
-            value:data.token
-           })
+            await generateAuthCookie({
+                prefix: ctx.payload.config.cookiePrefix,
+                value: data.token
+            })
             return data;
         }),
     logout: baseProcedure.mutation(async () => {
