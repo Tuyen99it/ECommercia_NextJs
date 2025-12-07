@@ -10,7 +10,7 @@ import { SearchFilters, SearchFiltersSkeleton } from "@/modules/home/ui/componen
 import { getQueryClient, trpc } from '@/trpc/server';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Suspense } from 'react';
-import { SearchFilters,SearchFiltersSkeleton } from '@/modules/home/ui/search-filter';
+
 
 
 export default async function HomeLayout({
