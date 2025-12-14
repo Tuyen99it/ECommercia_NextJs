@@ -194,6 +194,8 @@ export interface Product {
   price: number;
   category?: (string | null) | Category;
   description?: string | null;
+  images?: (string | Media)[] | null;
+  refundPolicy: '30-day' | '12-day' | 'no-refund';
   updatedAt: string;
   createdAt: string;
 }
@@ -326,6 +328,8 @@ export interface ProductsSelect<T extends boolean = true> {
   price?: T;
   category?: T;
   description?: T;
+  images?: T;
+  refundPolicy?: T;
   updatedAt?: T;
   createdAt?: T;
 }

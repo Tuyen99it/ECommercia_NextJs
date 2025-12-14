@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { Media } from '../payload-types';
 const Products: CollectionCOnfig = {
     slug: "products",
     admin:{
@@ -34,6 +35,19 @@ const Products: CollectionCOnfig = {
             type:"textarea",
             required:false,
 
+        },
+        {
+            name:"images",
+            type:"upload",
+            relationTo:"media" as Media,
+            hasMany:true,
+        },{
+            name:"refundPolicy",
+            type:"select",
+            options:["30-day","12-day","no-refund"],
+            defaultValue:"30-day",
+            required:true,
+           
         }
     ]
 }

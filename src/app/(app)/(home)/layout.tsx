@@ -24,8 +24,10 @@ export default async function HomeLayout({
     void queryClient.prefetchQuery(
         trpc.categories.getMany.queryOptions(),
     )
+    void queryClient.prefetchQuery(
+        trpc.products.getMany.queryOptions(),
+    )
    
-    
     return (
        
         <div>

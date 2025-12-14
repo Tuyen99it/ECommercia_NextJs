@@ -117,7 +117,7 @@ export const Categories = ({
                     )} onClick={() => setIsSideBarOpen(true)}>
                         ViewAll
                         <ListFilterIcon className="ml-2" />
-
+                        <CategoriesSidebar open={isSideBarOpen} onOpenChange={setIsSideBarOpen} />
                     </Button>
                 </div>
             </div>
