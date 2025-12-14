@@ -29,5 +29,5 @@ const Page = async ({ params}: Props) => {
     </HydrationBoundary>
   )
 }
->>>>>>>>> Temporary merge branch 2
+
 export default Page;
