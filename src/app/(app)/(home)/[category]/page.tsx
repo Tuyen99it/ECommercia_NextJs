@@ -1,9 +1,10 @@
 
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { getQueryClient,trpc } from '@/trpc/server';
+import { getQueryClient, trpc } from '@/trpc/server';
 
 import { ProductList } from '@/modules/product/ui/components/product-list';
 import { Suspense } from 'react';
+import { ProductFilters } from '@/modules/product/ui/components/filter-product';
 
 
 // localhost:3000/[category]/page
@@ -12,7 +13,7 @@ interface Props {
     category: string
   }
 }
-const Page = async ({ params}: Props) => {
+const Page = async ({ params }: Props) => {
   const { category } = await params;
   // prefetch product data before rendering
   const queryClient = getQueryClient();
@@ -22,10 +23,20 @@ const Page = async ({ params}: Props) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense fallback={<div>Loading products...</div>}>
-        <ProductList category={''}/>
-      </Suspense>
-      
+      <div className='px-4 lg:px-12 py-8 flex flex-col gap-4'>
+        <div className="grid grid-cols-1 lg:grid-cols-6 xl:grid-cols-8 gay-y-6 gap-x-12">
+          <div className="lg:col-span-2 xl:col-span-2">
+           <ProductFilters />
+          </div>
+        </div>
+        <div className="lg:col-span-4 xl:col-span-6">
+          <Suspense fallback={<div>Loading products...</div>}>
+            <ProductList category={''} />
+          </Suspense>
+        </div>
+      </div>
+
+
     </HydrationBoundary>
   )
 }

@@ -4,6 +4,7 @@ import Categories from '../../../collections/Categories';
 import type { Category } from "@/payload-types";
 import z from "zod"
 import { TRPCError } from "@trpc/server";
+import { Where } from "payload";
 
 export const ProductsRouter = createTRPCRouter({
   getMany: baseProcedure
@@ -44,9 +45,22 @@ export const ProductsRouter = createTRPCRouter({
     }),
   getManyByCategory: baseProcedure
     .input(z.object({
-      category: z.string().optional(),// allow underfined
+      category: z.string().nullable().optional(),// allow underfined
+      minPrice:z.string().nullable().optional(),
+      maxPrice:z.string().nullable().optional()
     }))
     .query(async ({ ctx, input }) => {
+      const where: Where = {};
+      if(input.minPrice){
+        where.price={
+          greater_than_equal:input.minPrice
+        }
+      }
+      if(input.maxPrice){
+        where.price={
+          less_than_equal:input.minPrice
+        }
+      }
      console.log("category input: "+input.category)
       // find category by name
       const categoryResult = await ctx.payload.find({

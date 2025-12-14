@@ -159,4 +159,37 @@ fix: .vscode/settings.json
 + load w/suspense in client component
 - reflector component to their modules
 - Push to github
+12. Filter Product
+- backend: add minPrice/MaxPrices
+- install nuqs package → safe search params in TS
+- custom hook with nuqsimport {parseAsString, useQueryStates} from "nuqs"
+export const useProductFilters=()=>{
+    return useQueryStates({
+        minPrice:parseAsString.withOptions({
+            clearOnDefault:true
+        }),
+        maxPrice:parseAsString.withOptions({
+            clearOnDefault:true
+        })
+    })
+}
+- purposes: automatically:
++ read value from URL
++ update url when value change
++ Keeps state in sync on refresh/share link
+data flow:
+User types price
+   ↓
+PriceFilter input changes
+   ↓
+onMinPriceChange / onMaxPriceChange
+   ↓
+onChange("minPrice" | "maxPrice", value)
+   ↓
+setFilters(...)
+   ↓
+URL query updated (?minPrice=...&maxPrice=...)
+   ↓
+Filters persist on refresh / share link
+
 

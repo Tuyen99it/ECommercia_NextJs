@@ -1,8 +1,3 @@
-import configPromise from '../../../payload.config'
-import { getPayload } from 'payload'
-import { Category } from "../../../payload-types"
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import Navbar from "@/modules/home/ui/navbar";
 import Footer from "@/modules/home/ui/footer";
@@ -19,15 +14,11 @@ export default async function HomeLayout({
     children: React.ReactNode;
 }>) {
 
-    // prefresh data from trpc server
+   // prefresh data from trpc server
     const queryClient = getQueryClient();
     void queryClient.prefetchQuery(
         trpc.categories.getMany.queryOptions(),
     )
-    void queryClient.prefetchQuery(
-        trpc.products.getMany.queryOptions(),
-    )
-   
     return (
        
         <div>

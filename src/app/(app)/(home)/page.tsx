@@ -8,17 +8,17 @@ import { Suspense } from 'react';
 const Page = async () => {
 
   // prefetch product data before rendering
-  const queryClient = getQueryClient();
-  void queryClient.prefetchQuery(trpc.products.getMany.queryOptions(
-  ));
+  // const queryClient = getQueryClient();
+  // void queryClient.prefetchQuery(trpc.products.getMany.queryOptions(
+  // ));
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
+    // <HydrationBoundary state={dehydrate(queryClient)}>
       <Suspense fallback={<div>Loading products...</div>}>
-        <ProductList category={''}/>
+        {/* <ProductList category={''}/> */}
       </Suspense>
       
-    </HydrationBoundary>
+    // </HydrationBoundary>
   )
 }
 export default Page;
