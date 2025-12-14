@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation"; // next hook
 import NavbarSideBar from "@/modules/home/ui/navbar-sidebar";
 =======
 import NavbarSideBar from "./components/navbar-sidebar";
->>>>>>> 10_CategoryPage
+>>>>>>>>> Temporary merge branch 2
 import { useState } from "react";
 import { MenuIcon } from "lucide-react";
 import { useTRPC } from "@/trpc/client";

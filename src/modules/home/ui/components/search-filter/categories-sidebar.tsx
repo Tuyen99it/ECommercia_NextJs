@@ -9,7 +9,7 @@ import { SubCategoryMenu } from './subcategory-menu';
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { CustomCategory } from "../../../../../app/(app)/(home)/types";
+
 interface Props {
     open: boolean;
     onOpenChange: (open: boolean) => void;
@@ -29,6 +29,7 @@ export const CategoriesSidebar = ({
     // if we have parent categories, show those, otherwise show root categories
     // Normalize data so it's always an array
     const currentCategories = parentCategories ?? data.json ?? [];
+    console.log("Current categoriesL",currentCategories)
     // const currentCategories 
     //   (Array.isArray(parentCategories) && parentCategories) ||
     //   (Array.isArray(data) ? data : data?.json ?? []);

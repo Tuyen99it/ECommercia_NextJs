@@ -11,6 +11,7 @@ const Media: CollectionConfig = {
       type: 'text',
       required: true,
     },
+    
   ],
   upload: true,
 }

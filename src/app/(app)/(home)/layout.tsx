@@ -10,7 +10,7 @@ import { SearchFilters, SearchFiltersSkeleton } from "@/modules/home/ui/componen
 import { getQueryClient, trpc } from '@/trpc/server';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Suspense } from 'react';
-import { SearchFilters,SearchFiltersSkeleton } from '@/modules/home/ui/search-filter';
+
 
 
 export default async function HomeLayout({
@@ -24,8 +24,10 @@ export default async function HomeLayout({
     void queryClient.prefetchQuery(
         trpc.categories.getMany.queryOptions(),
     )
+    void queryClient.prefetchQuery(
+        trpc.products.getMany.queryOptions(),
+    )
    
-
     return (
        
         <div>

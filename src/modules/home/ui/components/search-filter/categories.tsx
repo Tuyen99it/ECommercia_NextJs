@@ -14,7 +14,7 @@ import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import Link from 'next/link';
-import { BreadcrumbNav } from "../breadcrumnav";
+import { BreadcrumbNav } from "../breadcrumbnav";
 // Define or import the Category type
 
 
@@ -117,7 +117,7 @@ export const Categories = ({
                     )} onClick={() => setIsSideBarOpen(true)}>
                         ViewAll
                         <ListFilterIcon className="ml-2" />
-
+                        <CategoriesSidebar open={isSideBarOpen} onOpenChange={setIsSideBarOpen} />
                     </Button>
                 </div>
             </div>
