@@ -1,24 +1,16 @@
 
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { getQueryClient,trpc } from '@/trpc/server';
 
-import { ProductList } from '@/modules/product/ui/components/product-list';
-import { Suspense } from 'react';
-
-const Page = async () => {
-
-  // prefetch product data before rendering
-  // const queryClient = getQueryClient();
-  // void queryClient.prefetchQuery(trpc.products.getMany.queryOptions(
-  // ));
+import TestNuqs from './testnnuqs';
+import { SearchParams } from 'nuqs/server';
+interface Props{
+  searchParams: Promise<SearchParams>
+}
+const Page = async (searchParam:Props) => {
 
   return (
-    // <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense fallback={<div>Loading products...</div>}>
-        {/* <ProductList category={''}/> */}
-      </Suspense>
-      
-    // </HydrationBoundary>
+    <div>
+      <TestNuqs />
+    </div>
   )
 }
 export default Page;

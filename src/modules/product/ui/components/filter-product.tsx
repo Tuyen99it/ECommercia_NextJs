@@ -1,9 +1,12 @@
 "use client";
 import { cn } from '@/lib/utils';
 import { ChevronRightIcon, ChevronDownIcon } from 'lucide-react';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PriceFilter } from './price-filter';
 import { useProductFilters } from '../../hooks/use-product-filter';
+import { TagsFilter } from './tags-filter';
+import { useQueryStates, parseAsString, parseAsInteger } from 'nuqs';
+
 interface Props {
     title: string,
     className?: string,
@@ -25,23 +28,51 @@ export const ProductFilter = ({ title, className, children }: Props) => {
 }
 export const ProductFilters = () => {
     const [filters, setFilters] = useProductFilters();
+    useEffect(() => {
+    }, [filters])
+
+    const hasAnyFilters = Object.entries(filters ?? {}).some(([, value]) => {
+        if (Array.isArray(value)) return value.length > 0
+        if (typeof value === "string") return value !== ""
+        return false
+    })
+    const onClear = () => {
+        setFilters({
+            sort: "curated",
+            minPrice: "",
+            maxPrice: "",
+            tags: []
+        })
+    }
 
     // dynamic set value for filter hook, only accept minprice and maxprice with the name are key
     const onChange = (key: keyof typeof filters, value: unknown) => {
-        setFilters({ ...filters, [key]: value })
+        setFilters(prev => ({
+            ...prev,
+            [key]: value
+        }))
     }
     return (
+
         <div className="border rounded-md bg-white ">
-            <div className="px-4 border-b flex items-center justify-between">
-                <p>Filter Product</p>
-                <button className="text-sm text-blue-600" onClick={() => { }}>Reset</button>
+            <div className="p-4 border-b flex items-center justify-between gap-y-2">
+                <p className="font-medium gap-y-2">Filter Product</p>
+                {hasAnyFilters && <button className="text-md underline text-black" onClick={onClear}>Reset</button>}
             </div>
+
+
             <ProductFilter title='Price'>
                 <PriceFilter
                     minPrice={filters.minPrice ?? undefined}
                     maxPrice={filters.maxPrice ?? undefined}
-                    onMinPriceChange={(value)=> onChange("minPrice",value)}
-                    onMaxPriceChange={(value)=>onChange("maxPrice",value)}
+                    onMinPriceChange={(value) => onChange("minPrice", value)}
+                    onMaxPriceChange={(value) => onChange("maxPrice", value)}
+                />
+            </ProductFilter>
+            <ProductFilter title='Tags'>
+                <TagsFilter
+                    value={filters.tags}
+                    onChange={(value) => onChange("tags", value)}
                 />
             </ProductFilter>
 

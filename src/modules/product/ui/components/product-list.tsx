@@ -3,22 +3,26 @@ import { useTRPC } from '@/trpc/client';
 import { ProductCard } from './product-card';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { ProductGetManyOutput, ProductGetOneOutput } from '../../server/types';
+import { useProductFilters } from '../../hooks/use-product-filter';
 
 interface Prop {
     category?: string
 }
 export const ProductList = ({ category }: Prop) => {
+    const [filters] = useProductFilters()
+
     const trpc = useTRPC();
-   const { data } = useSuspenseQuery(
-    category
-      ? (trpc.products.getManyByCategory.queryOptions({
-          category,
-        }) as any)
-      : (trpc.products.getMany.queryOptions() as any)
-  );
+    const { data } = useSuspenseQuery(
+        category
+            ? (trpc.products.getManyByCategory.queryOptions({
+                category,
+                ...filters
+            }) as any)
+            : (trpc.products.getMany.queryOptions() as any)
+    );
 
-
-    const products: ProductGetManyOutput = data?.json|| [];
+    console.log(" data: " + JSON.stringify(data, null, 2));
+    const products: ProductGetManyOutput = (data as ProductGetManyOutput) || [];
 
     console.log("Product List data: " + JSON.stringify(products, null, 2));
     if (products?.length === 0) {

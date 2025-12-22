@@ -1,10 +1,9 @@
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
-import { Product } from "@/payload-types";
-import Categories from '../../../collections/Categories';
 import type { Category } from "@/payload-types";
 import z from "zod"
 import { TRPCError } from "@trpc/server";
-import { Where } from "payload";
+import { Where,Sort } from "payload";
+import { sortValues } from "../hooks/search-params";
 
 export const ProductsRouter = createTRPCRouter({
   getMany: baseProcedure
@@ -46,34 +45,42 @@ export const ProductsRouter = createTRPCRouter({
   getManyByCategory: baseProcedure
     .input(z.object({
       category: z.string().nullable().optional(),// allow underfined
-      minPrice:z.string().nullable().optional(),
-      maxPrice:z.string().nullable().optional()
+      minPrice: z.string().nullable().optional(),
+      maxPrice: z.string().nullable().optional(),
+      tags: z.array(z.string()).nullable().optional(),
+      sort: z.enum(sortValues).nullable().optional()
     }))
     .query(async ({ ctx, input }) => {
       const where: Where = {};
-      if(input.minPrice){
-        where.price={
-          greater_than_equal:input.minPrice
+      let sort: Sort = "-createdAt";
+      if (input.sort === "curated") {
+        sort = "-createdAt"
+      }
+      if (input.sort === "hot_end_new") {
+        sort = "-name"
+      }
+      if (input.sort === "trending") {
+        sort = "+createdAt"
+      }
+      if (input.minPrice) {
+        where.price = {
+          greater_than_equal: input.minPrice
         }
       }
-      if(input.maxPrice){
-        where.price={
-          less_than_equal:input.minPrice
+      if (input.maxPrice) {
+        where.price = {
+          less_than_equal: input.minPrice
         }
       }
-     console.log("category input: "+input.category)
+      console.log("category input: " + input.category)
       // find category by name
       const categoryResult = await ctx.payload.find({
         collection: "categories",
         depth: 0,
-        pagination: false,
-        where: {
-          slug: {
-            equals: input.category
-          }
-        }
+        where,
+        sort
       })
-      console.log("prefetch category slug: "+JSON.stringify(categoryResult,null,2))
+      console.log("prefetch category slug: " + JSON.stringify(categoryResult, null, 2))
       const existingCategory = categoryResult.docs[0];
       if (!existingCategory) {
         throw new TRPCError({

@@ -4,6 +4,7 @@ import { baseProcedure, createTRPCRouter } from '../init';
 import { categoriesRouter } from '../../modules/categories/server/procedures';
 import { authRouter } from '@/modules/auth/server/procedures';
 import { ProductsRouter } from '@/modules/product/server/procedures';
+import { tagsRouter } from '@/modules/tags/servers/procedures';
 export const t = initTRPC.create();
 const appRouter1 = t.router({
   // Create procedure at path 'login'
@@ -32,6 +33,7 @@ export const appRouter = createTRPCRouter({
     auth: authRouter,
     categories: categoriesRouter,
     products:ProductsRouter,
+    tags:tagsRouter
 
 });
 export const caller=appRouter.createCaller({});

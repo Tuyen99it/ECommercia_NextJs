@@ -192,4 +192,15 @@ URL query updated (?minPrice=...&maxPrice=...)
    ↓
 Filters persist on refresh / share link
 
+13: API filter and sorting
+- connect filter to API
+- Add "Tag" collection
++ Add "Tag" relation to "Products"
++ Create "Tag" procedures
++ Add infinity load
+- Add Sorting UI
+- Connect sorting to API
+- Push to github
+13.1 nuqs knowledge
+- same useState hook but store data into url querystring
 

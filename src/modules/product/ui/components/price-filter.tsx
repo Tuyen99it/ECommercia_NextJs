@@ -43,7 +43,7 @@ export const PriceFilter = ({ minPrice, maxPrice, onMinPriceChange, onMaxPriceCh
                     type="text"
                     placeholder="$0"
                     value={minPrice ? formatAsCurrency(minPrice) : ""}
-                    onChange={() => { }} />
+                    onChange={handleMinPriceChange} />
             </div>
             <div className="flex flex-col gap-2">
                 <Label className="font-medium text-base">
@@ -53,7 +53,7 @@ export const PriceFilter = ({ minPrice, maxPrice, onMinPriceChange, onMaxPriceCh
                     type="text"
                     placeholder="$200"
                     value={maxPrice ? formatAsCurrency(maxPrice) : ""}
-                    onChange={() => { }} />
+                    onChange={handleMaxPriceChange} />
             </div>
         </div>
     )

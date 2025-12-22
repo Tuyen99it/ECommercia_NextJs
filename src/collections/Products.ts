@@ -1,6 +1,7 @@
 import type { CollectionConfig } from "payload";
 import { Media } from '../payload-types';
-const Products: CollectionCOnfig = {
+import { relationship } from "node_modules/payload/dist/fields/validations";
+const Products: CollectionConfig = {
     slug: "products",
     admin:{
         useAsTitle:"name"
@@ -39,7 +40,7 @@ const Products: CollectionCOnfig = {
         {
             name:"images",
             type:"upload",
-            relationTo:"media" as Media,
+            relationTo:"media",
             hasMany:true,
         },{
             name:"refundPolicy",
@@ -48,6 +49,13 @@ const Products: CollectionCOnfig = {
             defaultValue:"30-day",
             required:true,
            
+        },
+        {
+            name:"tags",
+            type:"relationship",
+            relationTo:"tags",
+            hasMany:true
+
         }
     ]
 }
