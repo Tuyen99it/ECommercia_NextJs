@@ -204,3 +204,9 @@ Filters persist on refresh / share link
 13.1 nuqs knowledge
 - same useState hook but store data into url querystring
 
+14. Product list UI
+- Create reusable "product-list-view.tsx" component
+- Create product-card.tsx component
+- create Loading skeleton for product UI
+- Add infinity load for products
+- Push to github

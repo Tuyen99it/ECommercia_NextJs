@@ -2,47 +2,13 @@ import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import type { Category } from "@/payload-types";
 import z from "zod"
 import { TRPCError } from "@trpc/server";
-import { Where,Sort } from "payload";
+import { Where, Sort } from "payload";
 import { sortValues } from "../hooks/search-params";
 
+
 export const ProductsRouter = createTRPCRouter({
+
   getMany: baseProcedure
-    .query(async ({ ctx }) => {
-
-
-      // 1. Find root categories
-      const rootCategories = await ctx.payload.find({
-        collection: "categories",
-        depth: 0,
-        pagination: false,
-        where: {
-          parent: {
-            equals: null,
-          },
-        },
-      });
-
-      const rootCategoryIds = rootCategories.docs.map(cat => cat.id)
-      const result = await ctx.payload.find({
-        collection: "products",
-        depth: 1,
-        pagination: true,
-        limit: 30,
-        where: {
-          category: {
-            in: rootCategoryIds
-          }
-        }
-      }
-      );
-      const products = result.docs.map((product) => ({
-        ...product,
-        category: product.category as Category,
-      }));
-      console.log("Get all Product:" + JSON.stringify(products, null, 2))
-      return products;
-    }),
-  getManyByCategory: baseProcedure
     .input(z.object({
       category: z.string().nullable().optional(),// allow underfined
       minPrice: z.string().nullable().optional(),
@@ -69,45 +35,75 @@ export const ProductsRouter = createTRPCRouter({
       }
       if (input.maxPrice) {
         where.price = {
-          less_than_equal: input.minPrice
+          less_than_equal: input.maxPrice
         }
       }
-      console.log("category input: " + input.category)
-      // find category by name
-      const categoryResult = await ctx.payload.find({
-        collection: "categories",
-        depth: 0,
-        where,
-        sort
-      })
-      console.log("prefetch category slug: " + JSON.stringify(categoryResult, null, 2))
-      const existingCategory = categoryResult.docs[0];
-      if (!existingCategory) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Category is not exist"
+      if (!input.category) {
+        //cateogry top-level
+        const categoryWithoutParent = await ctx.payload.find({
+          collection: "categories",
+          depth: 0,
+          pagination: false,
+          where: {
+            parent: {
+              exists: false
+            }
+          }
         })
+        if (!categoryWithoutParent.docs || categoryWithoutParent.docs.length === 0) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "No top-level categories found"
+          });
+        }
+        const cateogryWithoutParentIds = categoryWithoutParent.docs.map((cat) => cat.id)
+        where.category = {
+          in: cateogryWithoutParentIds
+        }
       }
-      // find product by category
+      else {
+        const category=await ctx.payload.find({
+          collection:"categories",
+          depth:0,
+          pagination:false,
+          where:{
+            slug:{equals:input.category}
+          }
+        })
+        if (!category.docs || category.docs.length === 0) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "No category found"
+          });
+        }
+        
+        where.category = {
+          equals: category.docs[0].id
+        }
+      }
+      console.log("data in where")
+      console.log(JSON.stringify(where, null, 2))
+      // get product
       const result = await ctx.payload.find({
         collection: "products",
-        depth: 1,
+        depth: 2,
         pagination: false,
-        where: {
-          category: {
-            equals: existingCategory.id
-          }
-        }
+        where: where,
+        sort: sort
       })
-      if (result?.docs.length === 0) {
-        return null;
+      if (!result.docs || result.docs.length === 0) {
+        console.log("product not found");
+        return result.docs
       }
-      //Format each product 
       const products = result.docs.map((product) => ({
         ...product,
-        category: product.category as Category
-      }));
 
-      return products;
-    }),
-});
+      }))
+      console.log("product ")
+      console.log(JSON.stringify(products, null, 2))
+      return products
+    })
+
+
+})
+
