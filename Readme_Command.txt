@@ -210,3 +210,11 @@ Filters persist on refresh / share link
 - create Loading skeleton for product UI
 - Add infinity load for products
 - Push to github
+15. Tenants
+- Create Collection Tenants:
++ name
++ slug
++ product
++ Image
+- Create Tenant procedure
+- Create Tenant AppRouter
