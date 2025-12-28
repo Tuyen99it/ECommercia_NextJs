@@ -4,8 +4,11 @@ import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
+import { multiTenantPlugin } from '@payloadcms/plugin-multi-tenant'
+
+import type { Config } from './payload-types'
 import { fileURLToPath } from 'url'
-import sharp from 'sharp'
+// import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import Media from './collections/Media'
@@ -23,7 +26,11 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
+<<<<<<< HEAD
   collections: [Users, Media, Categories,Products,Tags],
+=======
+  collections: [Users, Media, Categories, Products, Tags, Tenants],
+>>>>>>> 7ef5db9 (Finish multi tenants)
   cookiePrefix: "fundroad",// config cookiePrefix
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -33,9 +40,27 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
   }),
-  sharp,
+  // sharp,
   plugins: [
     payloadCloudPlugin(),
+    multiTenantPlugin<Config>({
+      collections: {
+        products: {},
+      },
+      tenantField: {
+        access: {
+          read: () => true,
+          update: () => true,
+        }
+
+      },
+      tenantsArrayField: {
+        includeDefaultField: false,
+      },
+      userHasAccessToAllTenants:(user)=>Boolean(user?.roles?.includes("super-admin"))
+      
+    })
+
     // storage-adapter-placeholder
   ],
 })

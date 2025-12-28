@@ -138,9 +138,18 @@ const categories = [
 // seed script
 const seed = async () => {
     const payload = await getPayload({ config });
+    
+    await payload.create({
+        collection:"users",
+        data:{
+            email:"admindemo@gmail.com",
+            password:"demo",
+            roles:"super-admin",
+            username:"admin"
+        }
+    })
     for (const category of categories) {
         const parentCategory = await payload.create({
-            slug:"categories",
             collection: "categories",
             data: {
                 name: category.name,
@@ -151,7 +160,6 @@ const seed = async () => {
         });
         for (const subCategory of category.subcategories || []) {
             await payload.create({
-                slug: "categories",
                 collection:"categories",
                 data: {
                     name: subCategory.name,

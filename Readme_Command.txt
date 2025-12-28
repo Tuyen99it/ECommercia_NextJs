@@ -204,3 +204,22 @@ Filters persist on refresh / share link
 13.1 nuqs knowledge
 - same useState hook but store data into url querystring
 
+14. Product list UI
+- Create reusable "product-list-view.tsx" component
+- Create product-card.tsx component
+- create Loading skeleton for product UI
+- Add infinity load for products
+- Push to github
+15. Tenants
+- Create Collection Tenants:
++ name
++ slug
++ product
++ Image
+- add multi tenants plugin
+- Update user fields
++ Add supper-admin, add user role
++ Add tenant field
++ Create tenant on user registration
+- Collect Product to tenant
++ each product will belong to a tenant

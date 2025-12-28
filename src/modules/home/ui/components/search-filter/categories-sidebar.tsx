@@ -34,10 +34,12 @@ export const CategoriesSidebar = ({
     //   (Array.isArray(parentCategories) && parentCategories) ||
     //   (Array.isArray(data) ? data : data?.json ?? []);
     const handleOpenChange = (open: boolean) => {
+    if (!open) {
         setSelectedCategory(null)
-        setParentCategories(null);
-        onOpenChange(open)
+        setParentCategories(null)
     }
+    onOpenChange(open)
+}
     const handleCategoryClick = (category: CategoriesGetManyOutput[number]) => {
         if (category.subcategories && category.subcategories.length > 0) {
             // cast through unknown when narrowing incompatible array element types

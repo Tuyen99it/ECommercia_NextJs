@@ -18,7 +18,7 @@ export const SearchFilters = () => {
   const activeSubCategoryParam = params.subcategory as string | undefined;
 
   const activeCategory =
-    data?.json?.find((cat) => cat.slug === activeCategoryParam) || undefined;
+    data?.json.find((cat) => cat.slug === activeCategoryParam) || undefined;
 
   let activeColor = activeCategory?.color || "yellow";
 
@@ -46,7 +46,7 @@ export const SearchFilters = () => {
 export const SearchFiltersSkeleton = () => {
   return (
     <div className="px-4 lg:px-12 py-8 border-b flex flex-col gap-4 w-full">
-      <SearchInput disabled />
+      <SearchInput  />
       <div className="hidden lg:block"></div>
     </div>
   );

@@ -1,11 +1,12 @@
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { headers as getHeaders, cookies as getCookies } from "next/headers";
-import { z } from "zod"
+import { email, z } from "zod"
 import { AUTH_COOKIE } from "../constants";
 import { registerSchema, loginSchema } from "../schemas";
-import { error } from "console";
+
 import { generateAuthCookie } from "../utils";
+
 export const authRouter = createTRPCRouter({
 
     session: baseProcedure.query(async ({ ctx }) => {
@@ -24,7 +25,7 @@ export const authRouter = createTRPCRouter({
                     collection: "users",
                     limit: 1,
                     where: {
-                        username: {
+                        email: {
                             equals: input.email
                         }
                     }
@@ -36,6 +37,18 @@ export const authRouter = createTRPCRouter({
                         message: "User already taken"
                     })
                 }
+                const tenant=await ctx.payload.create({
+                    collection:"tenants",
+                    data:{
+                        name:input.username,
+                        slug:input.username,
+                        email:input.email,
+                        tripeAccont:"test"
+                    }
+                })
+
+
+
                 console.log("✅ Start create user", typeof (input.email));
                 const created = await ctx.payload.create({
                     collection: "users",
@@ -43,6 +56,11 @@ export const authRouter = createTRPCRouter({
                         email: input.email,
                         password: input.password,
                         username: input.username,
+                        tenans:[
+                            {
+                                tenant:tenant.id
+                            }
+                        ]
 
                     }
                 })
