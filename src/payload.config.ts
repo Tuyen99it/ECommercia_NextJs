@@ -9,7 +9,7 @@ import { multiTenantPlugin } from '@payloadcms/plugin-multi-tenant'
 import type { Config } from './payload-types'
 import { fileURLToPath } from 'url'
 // import sharp from 'sharp'
-
+import Tenants from './collections/Tenants'
 import { Users } from './collections/Users'
 import Media from './collections/Media'
 import Categories from "./collections/Categories"
@@ -26,11 +26,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-<<<<<<< HEAD
-  collections: [Users, Media, Categories,Products,Tags],
-=======
   collections: [Users, Media, Categories, Products, Tags, Tenants],
->>>>>>> 7ef5db9 (Finish multi tenants)
   cookiePrefix: "fundroad",// config cookiePrefix
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
