@@ -1,18 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Star } from "lucide-react"
-import { ProductGetOneOutput } from "@/modules/product/server/types"
-
 interface Props {
   id: string;
   name: string;

@@ -72,6 +72,8 @@ export interface Config {
     categories: Category;
     products: Product;
     tags: Tag;
+    tenants: Tenant;
+    'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -87,6 +89,8 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
+    tenants: TenantsSelect<false> | TenantsSelect<true>;
+    'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -94,6 +98,7 @@ export interface Config {
   db: {
     defaultIDType: string;
   };
+  fallbackLocale: null;
   globals: {};
   globalsSelect: {};
   locale: null;
@@ -130,6 +135,13 @@ export interface UserAuthOperations {
 export interface User {
   id: string;
   username: string;
+  roles?: ('super-admin' | 'user')[] | null;
+  tenants?:
+    | {
+        tenant: string | Tenant;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -147,6 +159,29 @@ export interface User {
       }[]
     | null;
   password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenants".
+ */
+export interface Tenant {
+  id: string;
+  /**
+   * This is the name of store
+   */
+  name: string;
+  /**
+   * This is te subdoman for the store
+   */
+  slug: string;
+  image?: (string | Media)[] | null;
+  tripeAccont: string;
+  /**
+   * You can not create product until you submit your Stripe Detail
+   */
+  stripeDetailSubmit?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -191,6 +226,7 @@ export interface Category {
  */
 export interface Product {
   id: string;
+  tenant?: (string | null) | Tenant;
   name: string;
   slug: string;
   price: number;
@@ -199,6 +235,12 @@ export interface Product {
   images?: (string | Media)[] | null;
   refundPolicy: '30-day' | '12-day' | 'no-refund';
   tags?: (string | Tag)[] | null;
+  tenants?:
+    | {
+        tenant: string | Tenant;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -212,6 +254,23 @@ export interface Tag {
   product?: (string | Product)[] | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-kv".
+ */
+export interface PayloadKv {
+  id: string;
+  key: string;
+  data:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -239,6 +298,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'tags';
         value: string | Tag;
+      } | null)
+    | ({
+        relationTo: 'tenants';
+        value: string | Tenant;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -288,6 +351,13 @@ export interface PayloadMigration {
  */
 export interface UsersSelect<T extends boolean = true> {
   username?: T;
+  roles?: T;
+  tenants?:
+    | T
+    | {
+        tenant?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -341,6 +411,7 @@ export interface CategoriesSelect<T extends boolean = true> {
  * via the `definition` "products_select".
  */
 export interface ProductsSelect<T extends boolean = true> {
+  tenant?: T;
   name?: T;
   slug?: T;
   price?: T;
@@ -349,6 +420,12 @@ export interface ProductsSelect<T extends boolean = true> {
   images?: T;
   refundPolicy?: T;
   tags?: T;
+  tenants?:
+    | T
+    | {
+        tenant?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -361,6 +438,27 @@ export interface TagsSelect<T extends boolean = true> {
   product?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenants_select".
+ */
+export interface TenantsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  image?: T;
+  tripeAccont?: T;
+  stripeDetailSubmit?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-kv_select".
+ */
+export interface PayloadKvSelect<T extends boolean = true> {
+  key?: T;
+  data?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
