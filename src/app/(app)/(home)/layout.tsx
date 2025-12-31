@@ -16,7 +16,8 @@ export default async function HomeLayout({
 
     // prefresh data from trpc server
     const queryClient = getQueryClient();
-    void queryClient.prefetchQuery(
+
+    queryClient.prefetchQuery(
         trpc.categories.getMany.queryOptions(),
     )
     return (

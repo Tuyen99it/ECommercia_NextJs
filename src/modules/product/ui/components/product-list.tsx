@@ -33,7 +33,7 @@ export const ProductList = ({ category, slug }: Prop) => {
             <div className="grid grid-cols-1 gap-6 items-left sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 
                 {products.map((product: ProductGetOneOutput) => (
-                    <ProductCard key={product.id} id={product.id} name={product.name} imageUrl="" tenantSlug={product?.tenant?.name} tenantImageUrl={product?.tenant?.imageUrl} reviewRating={(3)} reviewCount={(5)} price={product.price} />
+                    <ProductCard key={product.id} id={product.id} name={product.name} imageUrl={product?.image?.id} tenantSlug={product?.tenant?.name} tenantImageUrl={product?.tenant?.imageUrl} reviewRating={(3)} reviewCount={(5)} price={product.price} />
                 ))}
             </div>
         </section>
