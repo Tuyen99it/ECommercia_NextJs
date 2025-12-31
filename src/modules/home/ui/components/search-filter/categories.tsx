@@ -48,7 +48,7 @@ export const Categories = ({
     // const activeSubCategoryName = activeCategoryName?.subcategories?.find(
     //     (sub) => sub.slug === activeSubCategoryParam
     // );
-    const style=activeCategoryName?.color||"yellow"
+    const style = activeCategoryName?.color || "yellow"
     useEffect(() => {
         // use to hind the category that is over viewport
         const calculateVisible = () => {
@@ -103,6 +103,7 @@ export const Categories = ({
                 {
                     data.slice(0, visibleCount).map((category) => (
                         <CategoryDropdown
+                            key={category.id}
                             category={category}
                             isActive={activeCategory === category.slug}
                             isNavigationHovered={false}
@@ -121,11 +122,11 @@ export const Categories = ({
                     </Button>
                 </div>
             </div>
-           {
-                activeCategoryParam||activeSubCategoryParam ? <div className="mt-4">
-                <BreadcrumbNav activeCategoryParam={activeCategoryParam} activeSubCategoryParam={activeSubCategoryParam} />
-            </div> : null
-           }
+            {
+                activeCategoryParam || activeSubCategoryParam ? <div className="mt-4">
+                    <BreadcrumbNav activeCategoryParam={activeCategoryParam} activeSubCategoryParam={activeSubCategoryParam} />
+                </div> : null
+            }
 
         </div>
     );

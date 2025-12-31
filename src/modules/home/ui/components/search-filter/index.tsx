@@ -18,7 +18,7 @@ export const SearchFilters = () => {
   const activeSubCategoryParam = params.subcategory as string | undefined;
 
   const activeCategory =
-    data?.json.find((cat) => cat.slug === activeCategoryParam) || undefined;
+    data?.json?.find((cat) => cat.slug === activeCategoryParam) || undefined;
 
   let activeColor = activeCategory?.color || "yellow";
 

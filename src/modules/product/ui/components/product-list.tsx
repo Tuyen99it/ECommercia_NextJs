@@ -18,8 +18,10 @@ export const ProductList = ({ category }: Prop) => {
             category,
             ...filters
         }))
-
-    const products: ProductGetManyOutput = (data.json as ProductGetManyOutput) || [];
+    console.log("product data at client "+JSON.stringify(data,null,2))
+    // clear/ normalize data
+    const products=Object.values(data?.json??{}) as ProductGetManyOutput[]
+    console.log("products "+JSON.stringify(products,null,2))
     if (!products || products?.length === 0) {
         return (
             <div className="flex h-40 items-center justify-center text-muted-foreground">No producs found</div>
@@ -28,8 +30,9 @@ export const ProductList = ({ category }: Prop) => {
     return (
         <section className="mx-auto max-w-7xl px-4 py-6 ">
             <div className="grid grid-cols-1 gap-6 items-left sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+               
                 {products.map((product) => (
-                    <ProductCard id={product.id} name={product.name} authorUserName='Tuyen99it' authorImageUrl="/backgroundproduct.png" reviewRating={(3)} reviewCount={(5)} price={product.price} />
+                    <ProductCard key ={product.id} id={product.id} name={product.name} imageUrl={product?.image?.url} tenantSlug={product?.tenant?.name} tenantImageUrl={product?.tenant?.imageUrl} reviewRating={(3)} reviewCount={(5)} price={product.price} />
                 ))}
             </div>
         </section>

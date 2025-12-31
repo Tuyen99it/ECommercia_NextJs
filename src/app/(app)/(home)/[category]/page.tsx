@@ -12,21 +12,19 @@ import { ProductListView } from '@/modules/product/ui/views/product-list-view';
 
 // localhost:3000/[category]/page
 interface Props {
-  params: {
-    category: string
-  }
-  searchParams: SearchParams
+  params: Promise<{category:string}>
+  searchParams: Promise<SearchParams>
 }
 const Page = async ({ params, searchParams }: Props) => {
-  const  {category} = params
+  const  {category} = await params
   const filters = await loadProductFilters(searchParams);
 
-  console.log("data in filters: " + JSON.stringify(filters, null, 2))
+  console.log("data in filters: " + JSON.stringify(filters, null, 2)+"data in category: "+category)
   // prefetch product data before rendering
   const queryClient = getQueryClient();
   void queryClient.prefetchQuery(trpc.products.getMany.queryOptions({
     ...filters,
-    category: category ?? undefined,
+    category: category ?? undefined,  
   }));
 
   return (

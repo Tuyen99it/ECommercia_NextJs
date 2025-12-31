@@ -223,3 +223,17 @@ Filters persist on refresh / share link
 + Create tenant on user registration
 - Collect Product to tenant
 + each product will belong to a tenant
++ Fix bug: NextRouter was not mouted at: file://C%3A/learning/MultiTenants/ECommercia_NextJs/src/modules/product/ui/components/product-card.tsx:29:22
+origin code:
+const url =imageUrl?.split('/').pop() ?? '/backgroundproduct.png'
+ const router=useRouter()
+const handleUserClick=(e:React.MouseEvent<HTMLDivElement>)=>{
+  e.preventDefault();
+  e.stopPropagation();
+  router.push(generateTenantUrl(tenantSlug))
+}
+- Root cause: 3 reasons: 
++ useRouter outside Next.js application 
++ useRouter form next/router in app directory → import useRouter from next/navigation
++ useRouter in pages direciton →  try to update the export to next/compat/router
+action: change import { useRouter } from "next/navigation";

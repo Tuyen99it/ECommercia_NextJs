@@ -7,6 +7,7 @@ import { HydrationBoundary } from "@tanstack/react-query";
 import { getQueryClient,trpc } from "@/trpc/server";
 interface Props {
     category?: string
+    tenantSlug?:string
 }
 export const ProductListView = ({ category }: Props) => {
     const queryClient=getQueryClient();

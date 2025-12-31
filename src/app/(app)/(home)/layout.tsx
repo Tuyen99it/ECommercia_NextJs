@@ -14,13 +14,13 @@ export default async function HomeLayout({
     children: React.ReactNode;
 }>) {
 
-   // prefresh data from trpc server
+    // prefresh data from trpc server
     const queryClient = getQueryClient();
     void queryClient.prefetchQuery(
         trpc.categories.getMany.queryOptions(),
     )
     return (
-       
+
         <div>
             <Navbar />
             {/* get data user Hydration Bondary and Leveraging Suspense */}
@@ -40,6 +40,6 @@ export default async function HomeLayout({
             </div>
             <Footer />
         </div>
-      
+
     );
 }

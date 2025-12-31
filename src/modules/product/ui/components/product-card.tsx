@@ -1,12 +1,15 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Star } from "lucide-react"
+import { useRouter } from "next/navigation";
+import { generateTenantUrl } from "@/lib/utils";
+
 interface Props {
   id: string;
   name: string;
   imageUrl?: string | null;
-  authorUserName: string;
-  authorImageUrl?: string | null;
+  tenantSlug: string;
+  tenantImageUrl?: string | null;
   reviewRating: number;
   reviewCount: number
   price: number
@@ -16,12 +19,19 @@ export function ProductCard({
   id,
   name,
   imageUrl,
-  authorUserName,
-  authorImageUrl,
+  tenantSlug,
+  tenantImageUrl,
   reviewRating,
   reviewCount,
   price,
 }: Props) {
+ const url =imageUrl?.split('/').pop() ?? '/backgroundproduct.png'
+ const router=useRouter()
+const handleUserClick=(e:React.MouseEvent<HTMLDivElement>)=>{
+  e.preventDefault();
+  e.stopPropagation();
+  router.push(generateTenantUrl(tenantSlug))
+}
   return (
     <Link href={`/product/${id}`}>
       <div className="border rounded-md bg-white overflow-hidden h-full flex flex-col hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -29,22 +39,22 @@ export function ProductCard({
           <Image
             alt={name}
             fill
-            src={imageUrl ?? "/backgroundproduct.png"}
+            src={url ?? "/backgroundproduct.png"}
             className="object-cover"
           />
         </div>
         <div className="p-4 flex flex-col items-start justify-between flex-1 border-y">
           <h2 className="font-medium ">{name}</h2>
           <div className="flex items-center gap-2">
-            <div className="relative w-4 h-4 rounded-full overflow-hidden flex-shrink-0">
+            <div className="relative w-4 h-4 rounded-full overflow-hidden flex-shrink-0" onClick={handleUserClick}>
               <Image
-                alt={authorUserName}
+                alt={tenantSlug}
                 fill
-                src={authorImageUrl ?? "/backgrounduser.png"}
+                src={tenantImageUrl ?? "/backgrounduser.png"}
                 className="object-cover"
               />
             </div>
-            <span className="text-xs text-gray-600">{authorUserName}</span>
+            <span className="text-xs text-gray-600">{tenantSlug}</span>
           </div>
           {reviewCount > 0 && (
             <div className="flex items-center gap-1">

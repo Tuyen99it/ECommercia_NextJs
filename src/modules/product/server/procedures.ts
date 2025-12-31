@@ -4,6 +4,9 @@ import z from "zod"
 import { TRPCError } from "@trpc/server";
 import { Where, Sort } from "payload";
 import { sortValues } from "../hooks/search-params";
+import { Media } from "@/payload-types";
+import { Tenant } from "@/payload-types";
+import { ProductGetManyOutput } from "./types";
 
 
 export const ProductsRouter = createTRPCRouter({
@@ -14,7 +17,9 @@ export const ProductsRouter = createTRPCRouter({
       minPrice: z.string().nullable().optional(),
       maxPrice: z.string().nullable().optional(),
       tags: z.array(z.string()).nullable().optional(),
-      sort: z.enum(sortValues).nullable().optional()
+      sort: z.enum(sortValues).nullable().optional(),
+      tenantSlug: z.string().nullable().optional(),
+
     }))
     .query(async ({ ctx, input }) => {
       const where: Where = {};
@@ -38,6 +43,7 @@ export const ProductsRouter = createTRPCRouter({
           less_than_equal: input.maxPrice
         }
       }
+     
       if (!input.category) {
         //cateogry top-level
         const categoryWithoutParent = await ctx.payload.find({
@@ -62,12 +68,12 @@ export const ProductsRouter = createTRPCRouter({
         }
       }
       else {
-        const category=await ctx.payload.find({
-          collection:"categories",
-          depth:0,
-          pagination:false,
-          where:{
-            slug:{equals:input.category}
+        const category = await ctx.payload.find({
+          collection: "categories",
+          depth: 0,
+          pagination: false,
+          where: {
+            slug: { equals: input.category }
           }
         })
         if (!category.docs || category.docs.length === 0) {
@@ -76,7 +82,7 @@ export const ProductsRouter = createTRPCRouter({
             message: "No category found"
           });
         }
-        
+
         where.category = {
           equals: category.docs[0].id
         }
@@ -86,22 +92,20 @@ export const ProductsRouter = createTRPCRouter({
       // get product
       const result = await ctx.payload.find({
         collection: "products",
-        depth: 2,
-        pagination: false,
+        depth: 1,
+        pagination: true,
         where: where,
         sort: sort
       })
-      if (!result.docs || result.docs.length === 0) {
-        console.log("product not found");
-        return result.docs
+      console.log("data product result" + JSON.stringify(result.docs, null, 2))
+      return {
+        ...result.docs,
+        docs: result.docs.map((doc) => ({
+          ...doc,
+          image: doc.images as Media | null,
+          tenant: doc.tenant as Tenant & { image: Media | null },
+        }))
       }
-      const products = result.docs.map((product) => ({
-        ...product,
-
-      }))
-      console.log("product ")
-      console.log(JSON.stringify(products, null, 2))
-      return products
     })
 
 

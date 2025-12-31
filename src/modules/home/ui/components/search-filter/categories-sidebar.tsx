@@ -13,54 +13,79 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 interface Props {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-   
+
 }
 export const CategoriesSidebar = ({
     open,
     onOpenChange,
-   
+
 
 }: Props) => {
-    const trpc=useTRPC();
-    const {data}=useSuspenseQuery(trpc.categories.getMany.queryOptions());
+    const trpc = useTRPC();
+    const { data } = useSuspenseQuery(trpc.categories.getMany.queryOptions());
     const router = useRouter();
     const [parentCategories, setParentCategories] = useState<CategoriesGetManyOutput | null>(null)
     const [selectedCategory, setSelectedCategory] = useState<CategoriesGetManyOutput[number] | null>(null)
     // if we have parent categories, show those, otherwise show root categories
     // Normalize data so it's always an array
     const currentCategories = parentCategories ?? data.json ?? [];
-    console.log("Current categoriesL",currentCategories)
+    console.log("Current categoriesL", currentCategories)
     // const currentCategories 
     //   (Array.isArray(parentCategories) && parentCategories) ||
     //   (Array.isArray(data) ? data : data?.json ?? []);
     const handleOpenChange = (open: boolean) => {
-    if (!open) {
-        setSelectedCategory(null)
-        setParentCategories(null)
+        if (!open) {
+            setSelectedCategory(null)
+            setParentCategories(null)
+        }
+        onOpenChange(open)
     }
-    onOpenChange(open)
-}
+    // const handleCategoryClick = (category: CategoriesGetManyOutput[number]) => {
+    //     if (category.subcategories && category.subcategories.length > 0) {
+    //         // cast through unknown when narrowing incompatible array element types
+    //         setParentCategories(category.subcategories as unknown as CategoriesGetManyOutput);
+    //         setSelectedCategory(category);
+    //     }
+    //     else {
+    //         // this is a leaf category ( no suvcategories)
+    //         if (parentCategories && selectedCategory) {
+    //             // this is a sub category -navigate to /category/subcategory
+    //             router.push(`/${selectedCategory.slug}/${category.slug}`)
+    //         } else {
+    //             // this is a main category -navigate to/category
+    //             if (category.slug === "all") {
+    //                 router.push("/")
+    //             } else {
+    //                 router.push(`/${category.slug}`);
+    //             }
+    //         }
+    //         handleOpenChange(false);
+    //     }
+    // }
     const handleCategoryClick = (category: CategoriesGetManyOutput[number]) => {
-        if (category.subcategories && category.subcategories.length > 0) {
-            // cast through unknown when narrowing incompatible array element types
-            setParentCategories(category.subcategories as unknown as CategoriesGetManyOutput);
-            setSelectedCategory(category);
-        }
-        else {
-            // this is a leaf category ( no suvcategories)
-            if (parentCategories && selectedCategory) {
-                // this is a sub category -navigate to /category/subcategory
-                router.push(`/${selectedCategory.slug}/${category.slug}`)
+        // this is a leaf category ( no suvcategories)
+        if (parentCategories && selectedCategory) {
+            // this is a sub category -navigate to /category/subcategory
+            router.push(`/${selectedCategory.slug}/${category.slug}`)
+        } else {
+            // this is a main category -navigate to/category
+            if (category.slug === "all") {
+                router.push("/")
             } else {
-                // this is a main category -navigate to/category
-                if (category.slug === "all") {
-                    router.push("/")
-                } else {
-                    router.push(`/${category.slug}`);
-                }
+                router.push(`/${category.slug}`);
             }
-            handleOpenChange(false);
         }
+        handleOpenChange(false);
+    }
+    const handleSubCategoryOpen = (
+        e: React.MouseEvent,
+        category: CategoriesGetManyOutput[number]
+    ) => {
+        e.stopPropagation() // 🚫 prevent parent click
+        if (!category.subcategories?.length) return
+
+        setParentCategories(category.subcategories as CategoriesGetManyOutput)
+        setSelectedCategory(category)
     }
     const backgroundColor = selectedCategory?.color || "white";
     const handleBackClick = () => {
@@ -69,6 +94,7 @@ export const CategoriesSidebar = ({
             setSelectedCategory(null)
         }
     }
+
     return (
         <Sheet open={open} onOpenChange={handleOpenChange}>
             <SheetContent side="left"
@@ -94,9 +120,14 @@ export const CategoriesSidebar = ({
                             className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center justify-between text-base font-medium cursor-pointer"
                         >
                             {category.name}
-                            {category.subcategories && category.subcategories.length > 0 &&
-                                (<ChevronRightIcon className="size-4 " />)
-                            }
+                            {category.subcategories?.length > 0 && (
+                                <ChevronRightIcon
+                                    className="size-4"
+                                    onClick={(e) =>
+                                        handleSubCategoryOpen(e, category)
+                                    }
+                                />
+                            )}
 
                         </button>
                     ))}

@@ -13,7 +13,7 @@ interface Props{
     disable?:boolean,
   
 }
- export const SearchInput =({
+export const SearchInput =({
     disable,
    
 }:Props)=>{
