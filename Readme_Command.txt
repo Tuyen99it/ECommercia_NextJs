@@ -237,3 +237,37 @@ const handleUserClick=(e:React.MouseEvent<HTMLDivElement>)=>{
 + useRouter form next/router in app directory → import useRouter from next/navigation
 + useRouter in pages direciton →  try to update the export to next/compat/router
 action: change import { useRouter } from "next/navigation";
+- How to fix issue Trpc error rendering at tenants/[slug]
+base code: tenants/slug/layout and page:
+const Layout = async ({ children, params }: LayoutProp) => {
+    const { slug } = await params;
+    const queryClient = getQueryClient();
+    void queryClient.prefetchQuery(trpc.tenants.getOne.queryOptions({
+        slug
+    }))
+    return (
+        <HydrationBoundary state={dehydrate(queryClient)}>
+            ...
+        </HydrationBoundary>
+
+    )
+}
+export default Layout;
+- page.tsx
+ const Page = async ({ params, searchParams }: Props) => {
+   ...
+        const queryClient = getQueryClient()
+        void queryClient.prefetchQuery(trpc.products.getMany.queryOptions(
+            {
+                ...filters,
+                slug: slug,
+            }
+        ))
+        return (
+            <HydrationBoundary state={dehydrate(queryClient)}>
+               ...
+            </HydrationBoundary>
+        )
+    }
+- rootCause: Due to in a router tree ( from layout to multible pages) have multi-getQueryClient() and HydrationBoundaries. and data wrong format.
+- Action: Only use one getQueryClient() and a HydrationBoundaries in a router tree:

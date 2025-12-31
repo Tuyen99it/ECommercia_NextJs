@@ -18,7 +18,7 @@ export const ProductsRouter = createTRPCRouter({
       maxPrice: z.string().nullable().optional(),
       tags: z.array(z.string()).nullable().optional(),
       sort: z.enum(sortValues).nullable().optional(),
-      tenantSlug: z.string().nullable().optional(),
+      slug: z.string().nullable().optional(),
 
     }))
     .query(async ({ ctx, input }) => {
@@ -43,31 +43,31 @@ export const ProductsRouter = createTRPCRouter({
           less_than_equal: input.maxPrice
         }
       }
-     
-      if (!input.category) {
-        //cateogry top-level
-        const categoryWithoutParent = await ctx.payload.find({
-          collection: "categories",
+      if (input.slug) {
+        const tenantSlug = await ctx.payload.find({
+          collection: "tenants",
           depth: 0,
-          pagination: false,
           where: {
-            parent: {
-              exists: false
+            slug: {
+              equals: input.slug
             }
           }
         })
-        if (!categoryWithoutParent.docs || categoryWithoutParent.docs.length === 0) {
+        if (!tenantSlug) {
           throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "No top-level categories found"
-          });
+            code: "BAD_REQUEST",
+            message: "tenant slug is not found"
+          })
         }
-        const cateogryWithoutParentIds = categoryWithoutParent.docs.map((cat) => cat.id)
-        where.category = {
-          in: cateogryWithoutParentIds
-        }
+
+
+        where["tenants.tenant"] = {
+          equals: tenantSlug.docs[0].id,
+        };
+
       }
-      else {
+  
+      if(input.category){
         const category = await ctx.payload.find({
           collection: "categories",
           depth: 0,
@@ -99,13 +99,13 @@ export const ProductsRouter = createTRPCRouter({
       })
       console.log("data product result" + JSON.stringify(result.docs, null, 2))
       return {
-        ...result.docs,
+        ...result,
         docs: result.docs.map((doc) => ({
           ...doc,
           image: doc.images as Media | null,
           tenant: doc.tenant as Tenant & { image: Media | null },
-        }))
-      }
+        })),
+      };
     })
 
 

@@ -31,8 +31,6 @@ const Page = async ({ params, searchParams }: Props) => {
   
     <HydrationBoundary state={dehydrate(queryClient)}>
       <ProductListView category={category} />
-
-
     </HydrationBoundary>
   )
 }

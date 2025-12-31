@@ -1,17 +1,17 @@
+
 import { ProductSort } from "../components/product-sort"
 import { ProductFilters } from "../components/filter-product"
 import { Suspense } from "react"
 import { ProductList } from "../components/product-list"
 import { dehydrate } from '@tanstack/react-query';
 import { HydrationBoundary } from "@tanstack/react-query";
-import { getQueryClient,trpc } from "@/trpc/server";
+import { getQueryClient, trpc } from "@/trpc/server";
 interface Props {
     category?: string
-    tenantSlug?:string
+    slug?: string
 }
-export const ProductListView = ({ category }: Props) => {
-    const queryClient=getQueryClient();
-    void queryClient.prefetchQuery(trpc.products.getMany.queryOptions({ category: category || undefined }))
+export const ProductListView = ({ category, slug }: Props) => {
+
     return (
 
         <div className='px-4 lg:px-12 py-8 flex flex-col gap-4'>
@@ -26,11 +26,10 @@ export const ProductListView = ({ category }: Props) => {
             </div>
 
             <div className="lg:col-span-4 xl:col-span-6">
-                <HydrationBoundary state={dehydrate(queryClient)}>
-                    <Suspense fallback={<div>Loading products...</div>}>
-                        <ProductList category={category || ''} />
-                    </Suspense>
-                </HydrationBoundary>
+                <Suspense fallback={<div>Loading products...</div>}>
+                    <ProductList category={category || ''} slug={slug||""} />
+                </Suspense>
+
 
             </div>
         </div>
